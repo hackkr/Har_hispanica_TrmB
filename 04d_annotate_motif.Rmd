@@ -1,0 +1,185 @@
+---
+title: "R Notebook"
+author: Rylee K. Hackley
+output: html_notebook
+---
+
+```{r, message=F}
+library(tidyverse)
+library(GenomicRanges)
+library(GenomicFeatures)
+library(cowplot)
+library(janitor)
+```
+
+```{r, message=F}
+motifs <- read_tsv("04b_motif_discovery/1st_order_15peaks_19_whole_genome_FIMO.tsv") %>%
+  head(-3) # XSTREME returns instances of motifs in provided sequences. these already map to peaks.
+gr <- makeGRangesFromDataFrame(motifs, seqnames.field = "sequence_name", keep.extra.columns = T)
+peaks <- read_csv("03_peak_visualize/03_consensus_peaks.csv")[-c(1:3)] %>%
+  makeGRangesFromDataFrame(., keep.extra.columns = T)
+peaks_anno <- read_csv("04a_peak_annotation/04a_consensus_genelist.csv")
+peaks_anno <- makeGRangesFromDataFrame(peaks_anno, start.field = "peak_start", end.field = "peak_end", keep.extra.columns = T)
+
+# include all peaks enriched in no glucose
+peaks_DB <- rtracklayer::import("02_DiffBind/02_diffbind2022.bed")
+
+# load genome annotation files
+gff <- makeTxDbFromGFF("../00_genome_files/genomic.gff",
+  format = "gff",
+  dataSource = "NCBI",
+  organism = "Haloarcula hispanica",
+  dbxrefTag = "locus_tag"
+)
+gff.df <- read_csv("../00_genome_files/GCF_000223905.1_gff.key.csv")
+```
+
+Get GRanges of genes and promoters and intergenic regions
+```{r}
+genes.only <- genes(gff, columns = c("GENEID"))
+genes.only$type <- rep("gene", length(genes.only))
+
+# get promoter regions
+pro250 <- promoters(genes.only, upstream = 250, downstream = 0) ## Warning: this encroaches on nearby CDS
+pro250$type <- rep("promoter", length(pro250))
+
+# non coding regions of the genome
+IG <- gaps(GenomicRanges::reduce(genes.only, ignore.strand = T))
+```
+
+overlap promoter region and IG regions to get conservative promoter ranges (that respect genic regions)
+```{r}
+findOverlaps(pro250, IG) -> pros
+pintersect(pro250[queryHits(pros)], IG[subjectHits(pros)]) -> trimmed.pro
+trimmed.pro <- trimmed.pro[, 1:2]
+names(trimmed.pro) <- NULL
+
+# regenerate IG ranges to respect promoter regions
+ig.only <- gaps(GenomicRanges::reduce(c(genes.only, trimmed.pro), ignore.strand = T))
+```
+
+How many enriched regions have motifs in them?? how many times does the motif occur in the genome?
+```{r}
+# motifs that overlap with peaks
+length(subsetByOverlaps(peaks, gr))
+```
+
+How many motifs are within 20bp of each other?
+```{r}
+tmp <- GenomicRanges::reduce(resize(gr, width = 25, fix = "center"), ignore.strand = T, with.revmap = T)
+palindromes <- GRangesList()
+
+for (i in 1:length(tmp)) {
+  a <- length(tmp$revmap[[i]])
+  if (a > 1) {
+    b <- tmp$revmap[[i]][1]
+    c <- tmp$revmap[[i]][2]
+    rg <- width(range(gr[c(b, c)], ignore.strand = T))
+    #print(paste("motif pair footprint is", rg, "bps"))
+    if (rg <= 25) {
+      palindromes <- append(palindromes, GRangesList(gr[c(b, c)]))
+    }
+  }
+}
+# 8 pairs of motifs within 22 bps.
+as.data.frame(unlist(palindromes))
+```
+
+Annotate FIMO results: "where are the motif hits across the genome?"
+identify and annotate all motifs that are in intergenic/promoter regions                
+```{r}
+GenomicRanges::findOverlaps(genes.only, gr, ignore.strand = T, minoverlap = 5) -> genes
+GenomicRanges::findOverlaps(trimmed.pro, gr, ignore.strand = T, minoverlap = 5) -> promoters
+GenomicRanges::findOverlaps(ig.only, gr, ignore.strand = T, minoverlap = 5) -> ig.regions
+
+# get IRanges from hits objects and add informative metadata
+genelist <- gr[subjectHits(genes)][, -3]
+genelist$type <- rep("gene", length(genes))
+strand(genelist) <- strand(genes.only[queryHits(genes)])
+genelist$feature_start <- start(genes.only[queryHits(genes)])
+genelist$feature_end <- end(genes.only[queryHits(genes)])
+genelist$GENEID <- as.character(genes.only$GENEID[queryHits(genes)])
+
+prolist <- gr[subjectHits(promoters)][, -3]
+prolist$type <- rep("promoter", length(promoters))
+prolist$feature_start <- start(trimmed.pro[queryHits(promoters)])
+prolist$feature_end <- end(trimmed.pro[queryHits(promoters)])
+strand(prolist) <- strand(trimmed.pro[queryHits(promoters)])
+prolist$GENEID <- as.character(trimmed.pro$GENEID[queryHits(promoters)])
+
+iglist <- gr[subjectHits(ig.regions)][, -3]
+iglist$type <- rep("intergenic", length(ig.regions))
+iglist$feature_start <- start(ig.only[queryHits(ig.regions)])
+iglist$feature_end <- end(ig.only[queryHits(ig.regions)])
+iglist$GENEID <- NA
+
+# convert separate IRanges to Data frames
+seqs <- seq(1, length(genes))
+as.data.frame(prolist) -> one
+rownames(one) <- NULL
+as.data.frame(genelist, row.names(seqs)) -> two
+rownames(two) <- NULL
+as.data.frame(iglist, row.names(seqs)) -> three
+rownames(three) <- NULL
+
+# combine dfs (gene hits and promoter hits)
+final <- rbind(one, two, three) %>% distinct(.keep_all = T)
+colnames(final)[c(2, 3, 14)] <- c("motif_start", "motif_end", "locus_tag")
+
+# merge with gff information (get NCBI annotations and locus names)
+gff.df[gff.df$locus_tag %in% final$locus_tag, ] -> tmp
+tmp[c(2, 3, 4, 10)] -> tmp2
+(left_join(final, tmp2) %>% arrange(p.value) -> final)
+
+# check that all are accounted for:
+nrow(final) == nrow(one) + nrow(two) + nrow(three)
+
+write_csv(final, "04d_motif_annotation/motifs_annotated.csv")
+```
+
+how about palindromic motifs?
+```{r}
+pal2 <- unlist(palindromes)
+
+GenomicRanges::findOverlaps(genes.only, pal2, ignore.strand = T, minoverlap = 5) -> genes
+GenomicRanges::findOverlaps(trimmed.pro, pal2, ignore.strand = T, minoverlap = 5) -> promoters
+GenomicRanges::findOverlaps(ig.only, pal2, ignore.strand = T, minoverlap = 5) -> ig.regions
+
+# get IRanges from hits objects and add informative metadata
+genelist <- pal2[subjectHits(genes)][, -c(2:5)]
+genelist$type <- rep("gene", length(genes))
+strand(genelist) <- strand(genes.only[queryHits(genes)])
+genelist$feature_start <- start(genes.only[queryHits(genes)])
+genelist$feature_end <- end(genes.only[queryHits(genes)])
+genelist$GENEID <- as.character(genes.only$GENEID[queryHits(genes)])
+
+prolist <- pal2[subjectHits(promoters)][, -c(2:5)]
+prolist$type <- rep("promoter", length(promoters))
+prolist$feature_start <- start(trimmed.pro[queryHits(promoters)])
+prolist$feature_end <- end(trimmed.pro[queryHits(promoters)])
+strand(prolist) <- strand(trimmed.pro[queryHits(promoters)])
+prolist$GENEID <- as.character(trimmed.pro$GENEID[queryHits(promoters)])
+
+iglist <- pal2[subjectHits(ig.regions)][, -c(2:5)]
+iglist$type <- rep("intergenic", length(ig.regions))
+iglist$feature_start <- start(ig.only[queryHits(ig.regions)])
+iglist$feature_end <- end(ig.only[queryHits(ig.regions)])
+
+# convert separate IRanges to Data frames
+seqs <- seq(1, length(genes))
+as.data.frame(prolist) -> one
+rownames(one) <- NULL
+as.data.frame(genelist, row.names(seqs)) -> two
+rownames(two) <- NULL
+as.data.frame(iglist, row.names(seqs)) -> three
+rownames(three) <- NULL
+
+# combine dfs (gene hits and promoter hits)
+final <- rbind(one, two, three) %>% distinct(.keep_all = T)
+colnames(final)[c(2, 3, 11)] <- c("motif_start", "motif_end", "locus_tag")
+
+# merge with gff information (get NCBI annotations and locus names)
+gff.df[gff.df$locus_tag %in% final$locus_tag, ] -> tmp
+tmp[c(2, 3, 4, 10)] -> tmp2
+(left_join(final, tmp2) -> final)
+```

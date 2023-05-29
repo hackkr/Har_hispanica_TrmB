@@ -1,0 +1,29 @@
+---
+title: "Grey_list regions"
+author: Rylee K. Hackley
+output: html_notebook
+---
+Make greylist to mask peaks that reproducibly occur in the no-tag controls. 
+```{r, message=FALSE}
+# BiocManager::install("GreyListChIP")
+library("GreyListChIP")
+
+ctrls <- read.csv("01b_HCA_chip_meta.csv") # update with correct PATH-TO/BAM/FILES
+(filenames <- ctrls$bamReads)
+```
+Load in data
+```{r}
+set.seed(123)
+
+# chromosome information:
+gl <- new("GreyList", karyoFile = "01b_greyList/HCA_karotype.txt")
+
+for (i in 1:2) {
+  gl <- countReads(gl, bamFile = filenames[i])
+}
+
+gl <- calcThreshold(gl, sampleSize = 3000) # see below for results with varying sample sizes
+(gl <- makeGreyList(gl, maxGap = 150)) # use same bounds as will be used for peak calling
+
+export(gl, con = "01b_greyList/WT_greyList.bed")
+```

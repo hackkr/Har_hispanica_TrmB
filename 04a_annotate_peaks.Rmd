@@ -1,0 +1,190 @@
+---
+title: "annotate peaks"
+author: Rylee K. Hackley
+output: html_notebook
+---
+
+Annotating peaks
+```{r, message=FALSE}
+# BiocManager::install(c("GenomicRanges","rtracklayer", "ChIPseeker", "IRanges"))
+
+library(tidyverse)
+library(openxlsx)
+library(GenomicRanges)
+library(GenomicFeatures)
+library(rtracklayer)
+```
+
+Load genome file
+```{r, message=FALSE}
+gff <- makeTxDbFromGFF("../00_genome_files/genomic.gff",
+  format = "gff",
+  dataSource = "NCBI", organism = "Haloarcula hispanica"
+)
+gff_df <- read_csv("../00_genome_files/GCF_000223905.1_gff.key.csv")
+consensus <- read_csv("03_peak_visualize/03_consensus_peaks.csv")
+consensus_gr <- makeGRangesFromDataFrame(consensus, keep.extra.columns = T)
+```
+
+Get GRanges of genes and promoters and intergenic regions
+```{r}
+genes.only <- genes(gff, columns = c("GENEID"))
+
+# get promoter regions
+pro250 <- promoters(genes.only, upstream = 250, downstream = 0) ## Warning: this encroaches on nearby CDS
+pro250$type <- rep("promoter", length(pro250))
+
+# merge end of chr info with genes
+genes.only$type <- rep("gene", length(genes.only))
+
+# non coding regions of the genome
+IG <- gaps(GenomicRanges::reduce(genes.only, ignore.strand = T))
+```
+
+overlap promoter region and IG regions to get conservative promoter ranges (that respect genic regions)
+```{r}
+findOverlaps(pro250, IG, ignore.strand = T) -> pros
+pintersect(pro250[queryHits(pros)], IG[subjectHits(pros)]) -> trimmed.pro
+trimmed.pro <- trimmed.pro[, 1:2]
+names(trimmed.pro) <- NULL
+
+as.data.frame(pro250)
+as.data.frame(trimmed.pro)
+
+# regenerate IG ranges to respect promoter regions
+ig.only <- gaps(GenomicRanges::reduce(c(genes.only, trimmed.pro), ignore.strand = T))
+
+# for motif background models, export bed files for all non-coding regions
+export.bed(IG, "04b_motif_discovery/intergenic.bed")
+```
+
+```{r}
+# create hits objects of the overlaps (all peak widths have been standardizes to 300bp wide) adjusting the overlap requirement changes the stringency of peak annotation.
+GenomicRanges::findOverlaps(genes.only, consensus_gr, ignore.strand = T, minoverlap = 1) -> genes
+GenomicRanges::findOverlaps(trimmed.pro, consensus_gr, ignore.strand = T, minoverlap = 1) -> promoters
+GenomicRanges::findOverlaps(ig.only, consensus_gr, ignore.strand = T, minoverlap = 1) -> ig.regions
+
+# get IRanges from hits objects and add informative metadata
+genelist <- consensus_gr[subjectHits(genes)][, -3]
+genelist$type <- rep("gene", length(genes))
+pintersect(genes.only[queryHits(genes)], consensus_gr[subjectHits(genes)]) -> overlaps
+genelist$overlap <- width(overlaps)
+strand(genelist) <- strand(genes.only[queryHits(genes)])
+genelist$GENEID <- as.character(genes.only$GENEID[queryHits(genes)])
+
+prolist <- consensus_gr[subjectHits(promoters)][, -3]
+prolist$type <- rep("promoter", length(promoters))
+pintersect(trimmed.pro[queryHits(promoters)], consensus_gr[subjectHits(promoters)]) -> overlaps
+prolist$overlap <- width(overlaps)
+strand(prolist) <- strand(trimmed.pro[queryHits(promoters)])
+prolist$GENEID <- as.character(trimmed.pro$GENEID[queryHits(promoters)])
+
+iglist <- consensus_gr[subjectHits(ig.regions)][, -3]
+iglist$type <- rep("intergenic", length(ig.regions))
+pintersect(ig.only[queryHits(ig.regions)], consensus_gr[subjectHits(ig.regions)]) -> overlaps
+iglist$overlap <- width(overlaps)
+iglist$GENEID <- NA
+
+# convert separate IRanges to Data frames
+seqs <- seq(1, length(genes))
+as.data.frame(prolist) -> one
+rownames(one) <- NULL
+as.data.frame(genelist, row.names(seqs)) -> two
+rownames(two) <- NULL
+as.data.frame(iglist, row.names(seqs)) -> three
+rownames(three) <- NULL
+
+# combine dfs (gene hits and promoter hits)
+final <- rbind(one, two, three) %>% arrange(-average_RPKM_minus)
+colnames(final)[c(2, 3, 13)] <- c("peak_start", "peak_end", "locus_tag")
+
+# merge with gff information (get NCBI annotations and locus names)
+gff_df[gff_df$locus_tag %in% final$locus_tag, ][c(3:4, 6:7, 10)] -> tmp
+left_join(final, tmp, by = "locus_tag") -> final
+
+# reorder
+names(final)[c(11:12, 15:16)] <- c("overlap_feature", "overlap_length", "feature_start", "feature_end")
+final
+
+# export
+write_csv(final, "04a_peak_annotation/04a_consensus_genelist.csv")
+```
+
+export bedfile for extracting promoter seqs for motif discovery. 
+```{r}
+rtracklayer::export(consensus_gr, "03_peak_visualize/03_consensus_peaks.bed", format = "bed")
+```
+
+```{r, warning=FALSE}
+(filenames <- list.files(path = "02_DiffBind/", pattern = ".bed"))
+wb <- createWorkbook()
+
+for (i in 1:length(filenames)) {
+  # import gff file and convert to dataframe
+  bed <- rtracklayer::import(paste("02_DiffBind/", filenames[i], sep = ""), format = "bed", )
+  bed.df <- as.data.frame(bed)
+
+  # add informative meta data & order by peak size
+  bed.sort <- sort(bed, ~score, decreasing = T, ignore.strand = T) # sort by score
+  bed.sort$peakrank <- seq(1, length(bed.sort)) # create peak rank ID by score
+  bed.sort$peakwidth <- bed.df$width
+  bed.sort[, -1] %>% sort() -> bed # drop names, reorder, but keep peak rank.
+
+  bed.df <- as.data.frame(bed)
+
+  # create hits objects of the overlaps (all peak widths have been standardizes to 300bp wide) adjusting the overlap requirement changes the stringency of my peak annotation.
+  GenomicRanges::findOverlaps(genes.only, bed, ignore.strand = T, minoverlap = 1) -> genes
+  GenomicRanges::findOverlaps(trimmed.pro, bed, ignore.strand = T, minoverlap = 1) -> promoters
+  GenomicRanges::findOverlaps(ig.only, bed, ignore.strand = T, minoverlap = 1) -> ig.regions
+
+  # get IRanges from hits objects and add informative metadata
+  genelist <- bed[subjectHits(genes)][, -3]
+  genelist$type <- rep("gene", length(genes))
+  pintersect(genes.only[queryHits(genes)], bed[subjectHits(genes)]) -> overlaps
+  genelist$overlap <- width(overlaps)
+  strand(genelist) <- strand(genes.only[queryHits(genes)])
+  genelist$GENEID <- as.character(genes.only$GENEID[queryHits(genes)])
+
+  prolist <- bed[subjectHits(promoters)][, -3]
+  prolist$type <- rep("promoter", length(promoters))
+  pintersect(trimmed.pro[queryHits(promoters)], bed[subjectHits(promoters)]) -> overlaps
+  prolist$overlap <- width(overlaps)
+  strand(prolist) <- strand(trimmed.pro[queryHits(promoters)])
+  prolist$GENEID <- as.character(trimmed.pro$GENEID[queryHits(promoters)])
+
+  iglist <- bed[subjectHits(ig.regions)][, -3]
+  iglist$type <- rep("intergenic", length(ig.regions))
+  pintersect(ig.only[queryHits(ig.regions)], bed[subjectHits(ig.regions)]) -> overlaps
+  iglist$overlap <- width(overlaps)
+  iglist$GENEID <- NA
+
+  # convert separate IRanges to Data frames
+  seqs <- seq(1, length(genes))
+  as.data.frame(prolist) -> one
+  rownames(one) <- NULL
+  as.data.frame(genelist, row.names(seqs)) -> two
+  rownames(two) <- NULL
+  as.data.frame(iglist, row.names(seqs)) -> three
+  rownames(three) <- NULL
+
+  # combine dfs (gene hits and promoter hits)
+  final <- rbind(one, two, three) %>% arrange(seqnames, start, peakrank)
+  colnames(final)[c(2, 3, 10)] <- c("peak_start", "peak_end", "locus_tag")
+
+  # merge with gff information (get NCBI annotations and locus names)
+  gff_df[gff_df$locus_tag %in% final$locus_tag, ][c(2:7, 10)] -> tmp
+  left_join(final, tmp, by = "locus_tag") -> final
+
+  # reorder
+  (final <- final[c(7, 1, 2, 3, 4, 6, 8, 9, 10, 12, 5, 14, 15, 13, 16)])
+  names(final)[c(1, 2, 6, 7, 8, 11, 12, 13, 14)] <- c("peak_rank", "chr", "peak_score", "overlap_feature", "overlap_length", "feature_strand", "feature_start", "feature_end", "feature_length")
+  final$peak_score <- round(final$peak_score, digits = 2)
+  final %>% arrange(peak_rank, peak_start) -> final
+
+  # write to excel file, storing results for each .bed as a different sheet
+  addWorksheet(wb, str_remove_all(filenames[i], ".bed"), gridLines = TRUE) # Add a worksheet
+  writeData(wb, sheet = i, final, rowNames = FALSE) # write data to worksheet i
+}
+
+saveWorkbook(wb, "04a_peak_annotation/04a_genelists_all.xlsx", overwrite = TRUE)
+```

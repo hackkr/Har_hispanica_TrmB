@@ -1,0 +1,94 @@
+---
+title: "DiffBind HCA"
+author: Rylee K. Hackley
+output: html_notebook
+---
+```{r, message=FALSE}
+# BiocManager::install(c("rtracklayer", "DiffBind"))
+library(tidyverse)
+library(rtracklayer)
+library(DiffBind)
+```
+
+fragment sizes calculated by CHIPQC
+WT_IP_0glu_A        104
+WT_IP_0glu_B		    213
+trmB_IP_0glu_A	    104
+trmB_IP_0.1glu_A    167
+trmB_IP_0glu_B	    200
+trmB_IP_0.1glu_B	  103
+trmB_IP_0glu_C      103
+trmB_IP_0glu_D	    204	
+
+```{r, message=F, warning=F, fig.height=6, fig.width=6}
+# load all tagged samples and greylist
+(meta <- read_csv("01b_HCA_chip_meta.csv")[3:8, ])
+config <- list(
+  minQCth = 30, fragmentSize = c(104, 167, 200, 103, 103, 204),
+  bCorPlot = T, th = 0.05
+)
+grey <- import.bed("01b_greyList/WT_greyList.bed")
+
+# create initial DBA object
+trmB <- dba(sampleSheet = meta, peakFormat = "bed", minOverlap = 0.75, config = config)
+
+# number of overlapping peaks in samples considered together or split by condition
+dba.overlap(trmB, mode = DBA_OLAP_RATE)
+dba.overlap(trmB, trmB$masks$`0.1_glucose`, mode = DBA_OLAP_RATE)
+dba.overlap(trmB, trmB$masks$no_glucose, mode = DBA_OLAP_RATE)
+```
+total of 439 unique peaks across all samples.  
+137 are shared between both replicates with glucose. 
+140 are shared between at least 3 replicates with no glucose.
+
+Mask peaks identified in WT control samples
+```{r, fig.height=6, fig.width=6}
+trmB <- dba.blacklist(trmB, blacklist = FALSE, greylist = grey)
+dba.overlap(trmB, mode = DBA_OLAP_RATE)
+dba.overlap(trmB, trmB$masks$`0.1_glucose`, mode = DBA_OLAP_RATE)
+dba.overlap(trmB, trmB$masks$no_glucose, mode = DBA_OLAP_RATE)
+```
+total of 432 unique peaks across all samples.  
+121 are shared between both replicates with glucose. 
+124 are shared between at least 3 replicates with no glucose.
+
+Calculate a binding matrix with scores based on read counts for every sample (affinity scores), rather than confidence scores for only those peaks called in a specific sample (occupancy scores).
+```{r}
+trmB <- dba.count(trmB, summits = 150, minOverlap = 0.75) # peaks must occur in 75% of replicates to be considered consensus peaks
+trmB
+```
+100 peaks in the consensus, greylisted peakset
+
+Normalize, set up contrasts, and execute differential binding analysis
+```{r}
+trmB <- dba.normalize(trmB, normalize = DBA_NORM_RLE, library = DBA_LIBSIZE_PEAKREADS) # DBA norm RLE has the best baseline, and identifies the most shared sites.
+trmB <- dba.contrast(trmB, reorderMeta = list(Condition = "0.1_glucose"), minMembers = 2)
+trmB <- dba.analyze(trmB)
+dba.plotMA(trmB, method = DBA_DESEQ2)
+dba.show(trmB, bContrasts = TRUE)
+```
+
+Visualize DBA results
+```{r}
+dba.plotHeatmap(trmB, contrast = 1)
+
+# PCA for all sites in affinity matrix
+dba.plotPCA(trmB, DBA_CONDITION, label = DBA_CONDITION)
+
+# PCA plot using affinity data for only differential bound sites
+dba.plotPCA(trmB, contrast = 1, label = DBA_CONDITION)
+
+# binding affinity heatmap showing affinities for differential bound sites
+hmap <- colorRampPalette(c("red", "black", "green"))(n = 13)
+dba.plotHeatmap(trmB,
+  contrast = 1,
+  correlations = FALSE, scale = "row", colScheme = hmap
+)
+```
+
+view report, compile score, and export
+```{r}
+(trmB.DB <- dba.report(trmB, bFlip = T, bCalled = T, bCounts = T, bNormalized = F))
+trmB.DB$score <- trmB.DB$Fold
+export.bed(trmB.DB, "02_DiffBind/02_diffbind2022.bed")
+```

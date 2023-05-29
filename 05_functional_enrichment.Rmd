@@ -1,0 +1,125 @@
+---
+title: "Functional enrichment, annotated peaks"
+author: Rylee K. Hackley
+output: html_notebook
+---
+```{r}
+# BiocManager::install(c("GenomicRanges","rtracklayer", "ChIPseeker", "IRanges"))
+```
+
+```{r}
+library(tidyverse)
+library(GenomicRanges)
+library(IRanges)
+library(readxl)
+library(rtracklayer)
+library(viridis)
+
+# Note: can also do cogtest by different ID, just replace "cogfile$locus_tag" argument with other type of identifier, e.g. "cogfile$acc")
+# Calculate statistical information about the cogs represented in the list of genes using the function below.
+# Cogtest: three inputs to this function:
+# 1) list of gene names from the cluster (namelist)
+# 2) COG file
+# 3) p-value cutoff
+# 4) method for multiple testing correction
+
+cogtest <- function(namelist, cogfile, pvalue, method = "fdr", cutoff = 5) {
+  cogs <- subset(cogfile, is.element(cogfile$locus_tag, unique(namelist$locus_tag)) == TRUE)
+  clust <- table(cogs$COG_category) %>%
+    subset(. > cutoff) # apply cutoff
+  res <- data.frame(matrix(0, length(clust), 4)) # create 0 matrix
+  rownames(res) <- names(clust)
+  colnames(res) <- c("probability", "expect", "count", "p_adjust")
+  all <- table(cogfile$COG_category)
+  for (i in 1:length(clust)) { # calc expected frequencies and pval by hypergeo and append to DF
+    all2 <- all[names(all) == names(clust[i])][[1]]
+    res[i, 1] <- phyper(clust[[i]], all2, sum(all) - all2, nrow(cogs), lower.tail = F)
+    res[i, 2] <- all2 * (nrow(cogs) / nrow(cogfile))
+    res[i, 3] <- clust[[i]]
+  }
+  # multiple testing correction:
+  res$p_adjust <- p.adjust(res$probability, method = method)
+  fin <- subset(res, p_adjust <= pvalue)
+  fin <- rownames_to_column(fin, var = "COG")
+  return(fin)
+}
+
+# Note: the COGcategory name must be entered in quotes and add a space to the end of the category name of interest, e.g. 'transport '
+## Use the following function to look at the genes in your cluster associated with a particular COG
+cogset <- function(namelist, cogfile, COGcategory) {
+  subset(cogfile, is.element(cogfile$locus_tag, namelist$locus_tag) & is.element(cogfile$COG_category, COGcategory) == TRUE)
+}
+```
+
+
+```{r, message=F}
+gff_df <- read_csv("../00_genome_files/GCF_000223905.1_gff.key.csv")[c(1:4, 10)]
+
+# load arcogs, from EggNOG mapper
+hca_cogs <- read_csv("../00_genome_files/HCA_eggNOG_mapper.csv")[c(1, 6:8)]
+colnames(hca_cogs)[1] <- "old_locus_tag"
+tmp <- inner_join(gff_df, hca_cogs)
+colnames(hca_cogs)[1] <- "locus_tag"
+tmp2 <- inner_join(gff_df, hca_cogs)
+hca_cogs <- rbind(tmp, tmp2) %>% arrange(locus_tag)
+
+# peaks
+peaks <- read_csv("04a_peak_annotation/04a_consensus_genelist.csv")
+
+# motifs
+all_motif <- read_csv("04d_motif_annotation/motifs_annotated.csv")
+peak_motif <- all_motif[all_motif$locus_tag %in% peaks$locus_tag,]
+
+# look at the cogs in peaks
+hca_cogs[hca_cogs$locus_tag %in% peaks$locus_tag, ]
+```
+
+HYPERGEO TESTS
+```{r, fig.height=10, fig.width=12}
+cogtest(all_motif, hca_cogs, 0.05) -> motif
+# carbohydrate is most significant, but doesn't pass threshold for multiple testing
+
+# use only motifs in promoter regions
+all_motif %>% filter(type == "promoter") -> motif_pro
+motif_pro <- motif_pro[, c(12, 13, 14)]
+cogtest(motif_pro, hca_cogs, 0.05) -> pro_motif
+
+length(unique(motif_pro$locus_tag))
+
+# peaks with motifs
+cogtest(peak_motif, hca_cogs, 0.05, cutoff = 1) -> pk_motif
+
+motif$set <- rep("wg", nrow(motif))
+pro_motif$set <- rep("promoter", nrow(pro_motif))
+pk_motif$set <- rep("peaks", nrow(pk_motif))
+
+rbind(motif, pro_motif, pk_motif)
+```
+
+Look at involved genes
+```{r}
+cogset(all_motif, hca_cogs, "G")
+cogset(motif_pro, hca_cogs, "G")
+cogset(peaks, hca_cogs, "G")
+
+cogset(all_motif, hca_cogs, "E")
+cogset(motif_pro, hca_cogs, "E")
+cogset(peaks, hca_cogs, "E")
+
+cogset(all_motif, hca_cogs, "C")
+cogset(motif_pro, hca_cogs, "C")
+cogset(peaks, hca_cogs, "C")
+```
+
+create output file:
+```{r}
+# consensus peaks
+cogtest(peak_motif, hca_cogs, 1, cutoff = 1) %>%
+  mutate(
+    logp = -log(p_adjust),
+    cat = rep("trmB_consensus", nrow(.))
+  ) -> a
+a
+
+write_csv(a, "05_functional_enrichment//fxnal_categories.csv")
+```

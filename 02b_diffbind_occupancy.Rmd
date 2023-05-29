@@ -1,0 +1,117 @@
+---
+title: "DiffBind HCA"
+author: Rylee K. Hackley
+output: html_notebook
+---
+```{r, message=FALSE}
+# BiocManager::install(c("rtracklayer", "DiffBind"))
+library(tidyverse)
+library(openxlsx)
+library(rtracklayer)
+library(DiffBind)
+```
+
+fragment sizes calculated by CHIPQC
+WT_IP_0glu_A        104
+WT_IP_0glu_B		    213
+trmB_IP_0glu_A	    104
+trmB_IP_0.1glu_A    167
+trmB_IP_0glu_B	    200
+trmB_IP_0.1glu_B	  103
+trmB_IP_0glu_C      103
+trmB_IP_0glu_D	    204
+
+```{r, message=F, fig.height=6, fig.width=6}
+# load all tagged samples and greylist
+(meta <- read_csv("01b_HCA_chip_meta.csv")[3:8, ])
+config <- list(
+  minQCth = 30, fragmentSize = c(104, 167, 200, 103, 103, 204),
+  bCorPlot = T, th = 0.05
+)
+grey <- import.bed("01b_greyList//WT_greyList.bed")
+
+# create initial DBA object
+trmB <- dba(sampleSheet = meta, peakFormat = "bed", minOverlap = 0.75, config = config)
+
+# Mask peaks identified in WT control samples
+trmB <- dba.blacklist(trmB, blacklist = FALSE, greylist = grey)
+plot(dba.overlap(trmB, mode = DBA_OLAP_RATE), type = "b", ylab = "# peaks", xlab = "Overlap at least this many peaksets")
+```
+
+No glucose consensus peaks:
+```{r}
+meta %>% filter(Condition == "no_glucose") -> meta.noglu
+config <- list(
+  minQCth = 30, fragmentSize = c(104, 200, 103, 204),
+  bCorPlot = T, th = 0.05
+)
+trmB.noglu <- dba(sampleSheet = meta.noglu, peakFormat = "bed", minOverlap = 0.75, config = config) # peaks must occur in 75% of replicates to be considered consensus peaks
+trmB.noglu <- dba.blacklist(trmB.noglu, blacklist = FALSE, greylist = grey)
+count.noglu <- dba.count(trmB.noglu, summits = 150, minOverlap = 0.75, score = DBA_SCORE_RPKM_MINUS) # 124 peaks across 4 samples
+count.noglu <- dba.normalize(count.noglu, normalize = DBA_NORM_RLE, library = DBA_LIBSIZE_FULL)
+as.data.frame(peak.noglu <- dba.peakset(count.noglu, bRetrieve = T))
+dba.plotVenn(trmB.noglu, trmB.noglu$masks$no_glucose)
+```
+
+0.1% glucose consensus peaks:
+```{r}
+meta %>% filter(Condition == "0.1_glucose") -> meta.glu
+config <- list(
+  minQCth = 30, fragmentSize = c(167, 103),
+  bCorPlot = T, th = 0.05
+)
+trmB.glu <- dba(sampleSheet = meta.glu, peakFormat = "bed", minOverlap = 0.75, config = config) # peaks must occur in 75% of replicates to be considered consensus peaks
+trmB.glu <- dba.blacklist(trmB.glu, blacklist = FALSE, greylist = grey)
+count.glu <- dba.count(trmB.glu, summits = 150, minOverlap = 0.75, score = DBA_SCORE_RPKM_MINUS) # 121 peaks across 2 samples
+count.glu <- dba.normalize(count.glu, normalize = DBA_NORM_RLE, library = DBA_LIBSIZE_FULL)
+as.data.frame(peak.glu <- dba.peakset(count.glu, bRetrieve = T))
+dba.plotVenn(trmB.glu, trmB.glu$masks$`0.1_glucose`)
+```
+
+Consensus peaks ignoring condition:
+```{r}
+trmB <- dba(sampleSheet = meta, peakFormat = "bed", minOverlap = 0.75, config = config)
+trmB <- dba.blacklist(trmB, blacklist = FALSE, greylist = grey)
+counted <- dba.count(trmB, summits = 150, minOverlap = 0.75, score = DBA_SCORE_RPKM_MINUS) # 100 peaks in at least 4 of 6 samples
+count.shared <- dba.normalize(counted, normalize = DBA_NORM_RLE, library = DBA_LIBSIZE_FULL)
+as.data.frame(shared <- dba.peakset(count.shared, bRetrieve = T))
+shared$score <- rowMeans(as.data.frame(mcols(shared)))
+```
+
+Remove peaks in condition-specific lists that overlap with the shared list.
+```{r}
+## unique no_glu
+peak.noglu.unique <- peak.noglu[-queryHits(findOverlaps(peak.noglu, shared, type = "any", minoverlap = 100)), ]
+peak.noglu.unique$score <- rowMeans(as.data.frame(mcols(peak.noglu.unique)))
+peak.noglu.unique <- sort(peak.noglu.unique, by = ~score, decreasing = T)
+names(peak.noglu.unique) <- seq(length(peak.noglu.unique))
+peak.noglu.unique <- sort(peak.noglu.unique)
+as.data.frame(peak.noglu.unique)
+
+## unique glu
+peak.glu.unique <- peak.glu[-queryHits(findOverlaps(peak.glu, shared, type = "any", minoverlap = 100)), ]
+peak.glu.unique$score <- rowMeans(as.data.frame(mcols(peak.glu.unique)))
+peak.nlu.unique <- sort(peak.glu.unique, by = ~score, decreasing = T)
+names(peak.glu.unique) <- seq(length(peak.glu.unique))
+peak.glu.unique <- sort(peak.glu.unique)
+as.data.frame(peak.glu.unique)
+```
+
+Compare with affinity analysis
+```{r}
+DB <- import.bed("02_DiffBind/02_diffbind2022_RLE.bed")
+DB <- DB[, 2]
+
+peak.noglu.unique[queryHits(findOverlaps(peak.noglu.unique, DB, type = "any", minoverlap = 100)), ]
+peak.glu.unique[queryHits(findOverlaps(peak.glu.unique, DB, type = "any", minoverlap = 100)), ]
+## no DB peaks are in condition-specific lists (expected)
+
+shared[queryHits(findOverlaps(shared, DB, type = "any", minoverlap = 100)), ]
+DB[queryHits(findOverlaps(DB, shared, type = "any", minoverlap = 100)), ]
+# all 17 of DB calls are in the shared data set (expected)
+
+## prepare for exporting (bed)
+export.bed(peak.glu.unique, "02_DiffBind/glucose_peaks.bed") # includes score
+export.bed(peak.noglu.unique, "02_DiffBind/noglucose_peaks.bed") # includes score
+export.bed(shared, "02_DiffBind/trmB_shared_peaks.bed") # includes score
+```
