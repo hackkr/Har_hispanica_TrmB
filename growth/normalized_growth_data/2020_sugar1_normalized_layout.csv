@@ -1,0 +1,128 @@
+variable,ID,strain,media,condition,biorep,techrep,expt
+12,trmB+25mM galactose,trmB,HhCa,25mM galactose,2,2,2020_sugar1
+13,WT+25mM ribose,WT,HhCa,25mM ribose,1,1,2020_sugar1
+14,WT+25mM fructose,WT,HhCa,25mM fructose,2,1,2020_sugar1
+15,WT+25mM xylose,WT,HhCa,25mM xylose,1,2,2020_sugar1
+16,WT+25mM xylose,WT,HhCa,25mM xylose,2,3,2020_sugar1
+17,trmB+25mM glycerol,trmB,HhCa,25mM glycerol,1,2,2020_sugar1
+18,WT+25mM glycerol,WT,HhCa,25mM glycerol,1,2,2020_sugar1
+19,trmB+25mM galactose,trmB,HhCa,25mM galactose,1,3,2020_sugar1
+22,WT+25mM pyruvate,WT,HhCa,25mM pyruvate,1,1,2020_sugar1
+23,WT+25mM ribose,WT,HhCa,25mM ribose,1,3,2020_sugar1
+24,trmB+none,trmB,HhCa,none,1,2,2020_sugar1
+25,trmB+25mM fructose,trmB,HhCa,25mM fructose,1,2,2020_sugar1
+26,trmB+25mM acetate,trmB,HhCa,25mM acetate,1,2,2020_sugar1
+27,trmB+25mM galactose,trmB,HhCa,25mM galactose,2,1,2020_sugar1
+28,trmB+25mM glycerol,trmB,HhCa,25mM glycerol,2,1,2020_sugar1
+29,trmB+25mM glucose,trmB,HhCa,25mM glucose,1,2,2020_sugar1
+32,trmB+25mM sucrose,trmB,HhCa,25mM sucrose,2,3,2020_sugar1
+33,WT+25mM galactose,WT,HhCa,25mM galactose,2,3,2020_sugar1
+34,WT+25mM xylose,WT,HhCa,25mM xylose,1,3,2020_sugar1
+35,trmB+25mM glycerol,trmB,HhCa,25mM glycerol,1,3,2020_sugar1
+36,trmB+25mM glycerol,trmB,HhCa,25mM glycerol,2,3,2020_sugar1
+37,trmB+25mM acetate,trmB,HhCa,25mM acetate,2,2,2020_sugar1
+38,trmB+25mM acetate,trmB,HhCa,25mM acetate,2,1,2020_sugar1
+39,trmB+25mM glucose,trmB,HhCa,25mM glucose,1,1,2020_sugar1
+42,WT+25mM pyruvate,WT,HhCa,25mM pyruvate,2,3,2020_sugar1
+43,WT+25mM ribose,WT,HhCa,25mM ribose,1,2,2020_sugar1
+44,WT+none,WT,HhCa,none,2,3,2020_sugar1
+45,WT+25mM xylose,WT,HhCa,25mM xylose,1,1,2020_sugar1
+46,trmB+25mM ribose,trmB,HhCa,25mM ribose,2,2,2020_sugar1
+47,WT+none,WT,HhCa,none,1,1,2020_sugar1
+48,WT+25mM acetate,WT,HhCa,25mM acetate,2,1,2020_sugar1
+49,WT+25mM galactose,WT,HhCa,25mM galactose,1,3,2020_sugar1
+52,WT+none,WT,HhCa,none,1,2,2020_sugar1
+53,trmB+25mM fructose,trmB,HhCa,25mM fructose,2,1,2020_sugar1
+54,WT+25mM sucrose,WT,HhCa,25mM sucrose,2,1,2020_sugar1
+55,WT+25mM pyruvate,WT,HhCa,25mM pyruvate,2,1,2020_sugar1
+56,WT+25mM glycerol,WT,HhCa,25mM glycerol,1,1,2020_sugar1
+57,WT+25mM acetate,WT,HhCa,25mM acetate,2,2,2020_sugar1
+58,WT+25mM glycerol,WT,HhCa,25mM glycerol,2,1,2020_sugar1
+59,trmB+none,trmB,HhCa,none,1,3,2020_sugar1
+62,trmB+25mM glucose,trmB,HhCa,25mM glucose,2,1,2020_sugar1
+63,WT+25mM pyruvate,WT,HhCa,25mM pyruvate,1,3,2020_sugar1
+64,trmB+none,trmB,HhCa,none,2,2,2020_sugar1
+65,trmB+25mM xylose,trmB,HhCa,25mM xylose,1,3,2020_sugar1
+66,WT+none,WT,HhCa,none,2,1,2020_sugar1
+67,trmB+25mM fructose,trmB,HhCa,25mM fructose,2,3,2020_sugar1
+68,trmB+25mM galactose,trmB,HhCa,25mM galactose,1,1,2020_sugar1
+69,WT+25mM galactose,WT,HhCa,25mM galactose,2,2,2020_sugar1
+72,WT+25mM glucose,WT,HhCa,25mM glucose,2,2,2020_sugar1
+73,trmB+25mM acetate,trmB,HhCa,25mM acetate,1,3,2020_sugar1
+74,WT+25mM xylose,WT,HhCa,25mM xylose,2,2,2020_sugar1
+75,trmB+25mM fructose,trmB,HhCa,25mM fructose,1,3,2020_sugar1
+76,WT+25mM glycerol,WT,HhCa,25mM glycerol,1,3,2020_sugar1
+77,WT+25mM galactose,WT,HhCa,25mM galactose,2,1,2020_sugar1
+78,trmB+none,trmB,HhCa,none,2,3,2020_sugar1
+79,WT+25mM sucrose,WT,HhCa,25mM sucrose,1,2,2020_sugar1
+82,WT+25mM acetate,WT,HhCa,25mM acetate,2,3,2020_sugar1
+84,WT+25mM glucose,WT,HhCa,25mM glucose,1,2,2020_sugar1
+85,trmB+25mM galactose,trmB,HhCa,25mM galactose,1,2,2020_sugar1
+86,trmB+25mM glucose,trmB,HhCa,25mM glucose,2,2,2020_sugar1
+87,WT+25mM galactose,WT,HhCa,25mM galactose,1,1,2020_sugar1
+88,WT+25mM fructose,WT,HhCa,25mM fructose,1,3,2020_sugar1
+89,WT+25mM ribose,WT,HhCa,25mM ribose,2,2,2020_sugar1
+112,WT+25mM glucose,WT,HhCa,25mM glucose,2,1,2020_sugar1
+113,trmB+25mM acetate,trmB,HhCa,25mM acetate,2,3,2020_sugar1
+114,trmB+25mM xylose,trmB,HhCa,25mM xylose,1,2,2020_sugar1
+115,WT+25mM xylose,WT,HhCa,25mM xylose,2,1,2020_sugar1
+116,trmB+25mM fructose,trmB,HhCa,25mM fructose,2,2,2020_sugar1
+117,WT+none,WT,HhCa,none,2,2,2020_sugar1
+118,trmB+25mM glucose,trmB,HhCa,25mM glucose,2,3,2020_sugar1
+119,trmB+25mM sucrose,trmB,HhCa,25mM sucrose,1,2,2020_sugar1
+122,WT+25mM acetate,WT,HhCa,25mM acetate,1,2,2020_sugar1
+123,WT+25mM sucrose,WT,HhCa,25mM sucrose,2,3,2020_sugar1
+124,trmB+25mM pyruvate,trmB,HhCa,25mM pyruvate,2,1,2020_sugar1
+125,trmB+none,trmB,HhCa,none,1,1,2020_sugar1
+126,WT+25mM pyruvate,WT,HhCa,25mM pyruvate,1,2,2020_sugar1
+127,WT+25mM glucose,WT,HhCa,25mM glucose,2,3,2020_sugar1
+128,trmB+25mM pyruvate,trmB,HhCa,25mM pyruvate,2,3,2020_sugar1
+129,trmB+25mM xylose,trmB,HhCa,25mM xylose,1,1,2020_sugar1
+132,WT+25mM galactose,WT,HhCa,25mM galactose,1,2,2020_sugar1
+133,trmB+25mM ribose,trmB,HhCa,25mM ribose,1,2,2020_sugar1
+134,WT+25mM ribose,WT,HhCa,25mM ribose,2,3,2020_sugar1
+135,trmB+25mM ribose,trmB,HhCa,25mM ribose,2,3,2020_sugar1
+136,WT+25mM glycerol,WT,HhCa,25mM glycerol,2,2,2020_sugar1
+137,WT+25mM sucrose,WT,HhCa,25mM sucrose,2,2,2020_sugar1
+138,WT+25mM fructose,WT,HhCa,25mM fructose,2,2,2020_sugar1
+139,WT+25mM fructose,WT,HhCa,25mM fructose,1,2,2020_sugar1
+142,WT+25mM fructose,WT,HhCa,25mM fructose,1,1,2020_sugar1
+143,trmB+25mM sucrose,trmB,HhCa,25mM sucrose,1,3,2020_sugar1
+144,trmB+25mM xylose,trmB,HhCa,25mM xylose,2,2,2020_sugar1
+145,WT+25mM acetate,WT,HhCa,25mM acetate,1,3,2020_sugar1
+146,trmB+25mM glycerol,trmB,HhCa,25mM glycerol,2,2,2020_sugar1
+147,trmB+25mM fructose,trmB,HhCa,25mM fructose,1,1,2020_sugar1
+148,trmB+25mM pyruvate,trmB,HhCa,25mM pyruvate,2,2,2020_sugar1
+149,trmB+25mM pyruvate,trmB,HhCa,25mM pyruvate,1,3,2020_sugar1
+152,trmB+25mM pyruvate,trmB,HhCa,25mM pyruvate,1,1,2020_sugar1
+153,trmB+25mM ribose,trmB,HhCa,25mM ribose,2,1,2020_sugar1
+154,WT+25mM glucose,WT,HhCa,25mM glucose,1,3,2020_sugar1
+155,WT+25mM acetate,WT,HhCa,25mM acetate,1,1,2020_sugar1
+156,trmB+25mM ribose,trmB,HhCa,25mM ribose,1,1,2020_sugar1
+157,trmB+25mM glucose,trmB,HhCa,25mM glucose,1,3,2020_sugar1
+158,trmB+25mM sucrose,trmB,HhCa,25mM sucrose,2,2,2020_sugar1
+159,trmB+25mM sucrose,trmB,HhCa,25mM sucrose,2,1,2020_sugar1
+162,trmB+25mM acetate,trmB,HhCa,25mM acetate,1,1,2020_sugar1
+163,WT+25mM glucose,WT,HhCa,25mM glucose,1,1,2020_sugar1
+164,trmB+25mM glycerol,trmB,HhCa,25mM glycerol,1,1,2020_sugar1
+165,WT+25mM glycerol,WT,HhCa,25mM glycerol,2,3,2020_sugar1
+166,WT+25mM ribose,WT,HhCa,25mM ribose,2,1,2020_sugar1
+167,WT+none,WT,HhCa,none,1,3,2020_sugar1
+168,trmB+none,trmB,HhCa,none,2,1,2020_sugar1
+169,trmB+25mM xylose,trmB,HhCa,25mM xylose,2,1,2020_sugar1
+172,trmB+25mM galactose,trmB,HhCa,25mM galactose,2,3,2020_sugar1
+173,trmB+25mM pyruvate,trmB,HhCa,25mM pyruvate,1,2,2020_sugar1
+174,WT+25mM fructose,WT,HhCa,25mM fructose,2,3,2020_sugar1
+175,WT+25mM sucrose,WT,HhCa,25mM sucrose,1,1,2020_sugar1
+176,WT+25mM sucrose,WT,HhCa,25mM sucrose,1,3,2020_sugar1
+177,trmB+25mM sucrose,trmB,HhCa,25mM sucrose,1,1,2020_sugar1
+178,trmB+25mM ribose,trmB,HhCa,25mM ribose,1,3,2020_sugar1
+179,WT+25mM pyruvate,WT,HhCa,25mM pyruvate,2,2,2020_sugar1
+182,trmB+none,trmB,HhCa,none,3,1,2020_sugar1
+183,trmB+none,trmB,HhCa,none,3,2,2020_sugar1
+184,trmB+none,trmB,HhCa,none,3,3,2020_sugar1
+185,trmB+none,trmB,HhCa,none,3,4,2020_sugar1
+186,WT+none,WT,HhCa,none,3,1,2020_sugar1
+187,WT+none,WT,HhCa,none,3,2,2020_sugar1
+188,WT+none,WT,HhCa,none,3,3,2020_sugar1
+189,WT+none,WT,HhCa,none,3,4,2020_sugar1

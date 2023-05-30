@@ -1,0 +1,201 @@
+well,strain,media,condition,biorep,techrep
+1,blank,CDM,25mM glucose,,
+2,blank,CDM,25mM pyruvate,,
+3,blank,CDM,25mM acetate,,
+4,blank,CDM,25mM galactose,,
+5,blank,CDM,25mM glucose,,
+6,blank,CDM,25mM glycerol,,
+7,blank,CDM,25mM galactose,,
+8,blank,CDM,25mM acetate,,
+9,blank,CDM,25mM xylose,,
+10,blank,CDM,25mM galactose,,
+11,blank,CDM,25mM xylose,,
+12,trmB,CDM,25mM ribose,1,3
+13,WT,CDM,none,2,1
+14,trmB,CDM,25mM fructose,1,2
+15,trmB,CDM,25mM xylose,1,2
+16,WT,CDM,25mM pyruvate,2,1
+17,WT,CDM,25mM glucose,1,1
+18,trmB,CDM,none,1,3
+19,WT,CDM,25mM xylose,2,2
+20,blank,CDM,none,,
+21,blank,CDM,25mM fructose,,
+22,WT,CDM,25mM ribose,2,2
+23,trmB,CDM,25mM ribose,2,2
+24,trmB,CDM,25mM fructose,1,3
+25,WT,CDM,25mM galactose,2,2
+26,WT,CDM,none,1,2
+27,WT,CDM,25mM xylose,2,1
+28,WT,CDM,25mM glucose,1,2
+29,trmB,CDM,25mM xylose,2,1
+30,blank,CDM,none,,
+31,blank,CDM,25mM pyruvate,,
+32,WT,CDM,25mM glucose,2,1
+33,trmB,CDM,25mM glucose,2,1
+34,WT,CDM,25mM acetate,1,1
+35,WT,CDM,none,2,3
+36,trmB,CDM,25mM fructose,2,3
+37,WT,CDM,25mM pyruvate,1,2
+38,WT,CDM,none,1,3
+39,WT,CDM,25mM sucrose,2,1
+40,blank,CDM,25mM sucrose,,
+41,blank,CDM,25mM ribose,,
+42,WT,CDM,25mM xylose,1,1
+43,trmB,CDM,25mM fructose,2,2
+44,trmB,CDM,none,2,3
+45,WT,CDM,25mM glycerol,2,1
+46,WT,CDM,25mM fructose,2,2
+47,trmB,CDM,none,1,2
+48,trmB,CDM,25mM glycerol,1,3
+49,trmB,CDM,25mM xylose,1,1
+50,blank,CDM,25mM ribose,,
+51,blank,CDM,25mM ribose,,
+52,WT,CDM,25mM sucrose,1,1
+53,WT,CDM,25mM pyruvate,1,1
+54,trmB,CDM,25mM acetate,1,1
+55,WT,CDM,25mM glycerol,1,2
+56,trmB,CDM,25mM glycerol,2,1
+57,WT,CDM,25mM pyruvate,2,2
+58,trmB,CDM,25mM ribose,1,2
+59,WT,CDM,25mM pyruvate,1,3
+60,blank,CDM,25mM sucrose,,
+61,blank,CDM,25mM acetate,,
+62,trmB,CDM,25mM sucrose,1,3
+63,WT,CDM,25mM pyruvate,2,3
+64,trmB,CDM,25mM fructose,2,1
+65,trmB,CDM,25mM glycerol,2,2
+66,WT,CDM,25mM glycerol,2,3
+67,trmB,CDM,none,2,1
+68,trmB,CDM,25mM fructose,1,1
+69,trmB,CDM,25mM galactose,2,1
+70,blank,CDM,25mM xylose,,
+71,blank,CDM,25mM xylose,,
+72,trmB,CDM,none,1,4
+73,trmB,CDM,25mM pyruvate,1,3
+74,WT,CDM,none,1,4
+75,trmB,CDM,25mM pyruvate,2,2
+76,trmB,CDM,25mM sucrose,1,1
+77,trmB,CDM,25mM galactose,1,1
+78,WT,CDM,25mM sucrose,1,2
+79,WT,CDM,25mM fructose,2,1
+80,blank,CDM,none,,
+81,blank,CDM,25mM acetate,,
+82,trmB,CDM,25mM sucrose,1,2
+83,WT,CDM,25mM acetate,2,2
+84,WT,CDM,25mM acetate,2,1
+85,WT,CDM,25mM galactose,1,2
+86,trmB,CDM,25mM pyruvate,2,3
+87,WT,CDM,25mM sucrose,2,3
+88,trmB,CDM,25mM sucrose,2,1
+89,WT,CDM,none,1,5
+90,blank,CDM,25mM sucrose,,
+91,blank,CDM,25mM pyruvate,,
+92,blank,CDM,25mM xylose,,
+93,blank,CDM,25mM galactose,,
+94,blank,CDM,25mM xylose,,
+95,blank,CDM,25mM xylose,,
+96,blank,CDM,25mM ribose,,
+97,blank,CDM,25mM glucose,,
+98,blank,CDM,25mM fructose,,
+99,blank,CDM,25mM pyruvate,,
+100,blank,CDM,25mM sucrose,,
+101,blank,CDM,25mM xylose,,
+102,blank,CDM,25mM glycerol,,
+103,blank,CDM,25mM glucose,,
+104,blank,CDM,25mM ribose,,
+105,blank,CDM,none,,
+106,blank,CDM,25mM glucose,,
+107,blank,CDM,25mM glucose,,
+108,blank,CDM,25mM ribose,,
+109,blank,CDM,25mM ribose,,
+110,blank,CDM,25mM galactose,,
+111,blank,CDM,25mM glycerol,,
+112,WT,CDM,25mM acetate,2,3
+113,WT,CDM,none,1,6
+114,trmB,CDM,25mM ribose,1,1
+115,trmB,CDM,none,2,2
+116,WT,CDM,25mM glycerol,1,3
+117,WT,CDM,25mM glycerol,1,1
+118,WT,CDM,25mM fructose,2,3
+119,WT,CDM,25mM xylose,1,2
+120,blank,CDM,25mM glycerol,,
+121,blank,CDM,25mM fructose,,
+122,trmB,CDM,25mM pyruvate,1,1
+123,WT,CDM,25mM ribose,1,1
+124,trmB,CDM,25mM glucose,2,3
+125,WT,CDM,25mM fructose,1,3
+126,WT,CDM,none,2,2
+127,trmB,CDM,25mM ribose,2,3
+128,trmB,CDM,25mM glycerol,2,3
+129,trmB,CDM,25mM acetate,1,2
+130,blank,CDM,25mM glycerol,,
+131,blank,CDM,25mM sucrose,,
+132,trmB,CDM,25mM glycerol,1,1
+133,WT,CDM,none,1,7
+134,WT,CDM,25mM fructose,1,1
+135,trmB,CDM,none,1,5
+136,trmB,CDM,25mM sucrose,2,3
+137,WT,CDM,25mM glucose,2,3
+138,trmB,CDM,25mM galactose,1,3
+139,WT,CDM,25mM ribose,2,1
+140,blank,CDM,25mM glycerol,,
+141,blank,CDM,25mM pyruvate,,
+142,trmB,CDM,none,1,6
+143,WT,CDM,25mM ribose,1,2
+144,trmB,CDM,25mM glucose,1,1
+145,WT,CDM,25mM glucose,2,2
+146,trmB,CDM,25mM galactose,1,2
+147,trmB,CDM,25mM xylose,2,2
+148,WT,CDM,25mM xylose,1,3
+149,trmB,CDM,25mM galactose,2,3
+150,blank,CDM,25mM fructose,,
+151,blank,CDM,25mM glucose,,
+152,WT,CDM,25mM ribose,2,3
+153,trmB,CDM,25mM sucrose,2,2
+154,trmB,CDM,25mM acetate,2,1
+155,WT,CDM,25mM sucrose,1,3
+156,WT,CDM,25mM galactose,1,1
+157,trmB,CDM,25mM ribose,2,1
+158,WT,CDM,25mM glucose,1,3
+159,trmB,CDM,25mM xylose,1,3
+160,blank,CDM,25mM glycerol,,
+161,blank,CDM,none,,
+162,WT,CDM,25mM galactose,1,3
+163,WT,CDM,25mM acetate,1,3
+164,trmB,CDM,25mM acetate,2,2
+165,trmB,CDM,25mM xylose,2,3
+166,trmB,CDM,25mM glucose,1,3
+167,trmB,CDM,25mM acetate,2,3
+168,WT,CDM,25mM galactose,2,3
+169,trmB,CDM,25mM glucose,1,2
+170,blank,CDM,25mM fructose,,
+171,blank,CDM,25mM galactose,,
+172,trmB,CDM,none,1,1
+173,WT,CDM,25mM sucrose,2,2
+174,WT,CDM,25mM galactose,2,1
+175,WT,CDM,25mM ribose,1,3
+176,WT,CDM,25mM acetate,1,2
+177,WT,CDM,25mM glycerol,2,2
+178,trmB,CDM,25mM pyruvate,1,2
+179,WT,CDM,none,1,1
+180,blank,CDM,25mM glucose,,
+181,blank,CDM,25mM galactose,,
+182,trmB,CDM,25mM galactose,2,2
+183,trmB,CDM,25mM acetate,1,3
+184,trmB,CDM,25mM pyruvate,2,1
+185,trmB,CDM,25mM glycerol,1,2
+186,trmB,CDM,25mM glucose,2,2
+187,WT,CDM,25mM xylose,2,3
+188,WT,CDM,25mM fructose,1,2
+189,trmB,CDM,none,1,8
+190,blank,CDM,none,,
+191,blank,CDM,25mM pyruvate,,
+192,blank,CDM,25mM sucrose,,
+193,blank,CDM,25mM acetate,,
+194,blank,CDM,25mM acetate,,
+195,blank,CDM,25mM glycerol,,
+196,blank,CDM,25mM sucrose,,
+197,blank,CDM,none,,
+198,blank,CDM,25mM acetate,,
+199,blank,CDM,25mM sucrose,,
+200,blank,CDM,25mM fructose,,

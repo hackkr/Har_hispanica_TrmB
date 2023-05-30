@@ -1,0 +1,119 @@
+variable,ID,strain,media,condition,biorep,techrep,expt
+12,HH37+25mM glucose,HH37,Hh-CA+ura,25mM glucose,b,2,2022_sugar1
+13,HH407+25mM glycerol,HH407,Hh-CA+ura,25mM glycerol,b,3,2022_sugar1
+14,HH188+25mM glycerol,HH188,Hh-CA+ura,25mM glycerol,b,4,2022_sugar1
+15,HH408,HH408,Hh-CA+ura,,a,4,2022_sugar1
+16,HH32+25mM glycerol,HH32,Hh-CA+ura,25mM glycerol,a,1,2022_sugar1
+17,HH407,HH407,Hh-CA+ura,,a,3,2022_sugar1
+19,HH37,HH37,Hh-CA+ura,,b,4,2022_sugar1
+22,HH408+25mM glucose,HH408,Hh-CA+ura,25mM glucose,a,4,2022_sugar1
+23,HH407+25mM glycerol,HH407,Hh-CA+ura,25mM glycerol,a,2,2022_sugar1
+24,HH407,HH407,Hh-CA+ura,,b,1,2022_sugar1
+25,HH407+25mM glycerol,HH407,Hh-CA+ura,25mM glycerol,b,2,2022_sugar1
+26,HH188,HH188,Hh-CA+ura,,b,4,2022_sugar1
+27,HH37+25mM glucose,HH37,Hh-CA+ura,25mM glucose,a,4,2022_sugar1
+28,HH32+25mM glucose,HH32,Hh-CA+ura,25mM glucose,a,4,2022_sugar1
+29,HH32,HH32,Hh-CA+ura,,a,1,2022_sugar1
+32,HH408,HH408,Hh-CA+ura,,b,3,2022_sugar1
+33,HH32+25mM glycerol,HH32,Hh-CA+ura,25mM glycerol,a,3,2022_sugar1
+34,HH32+25mM glucose,HH32,Hh-CA+ura,25mM glucose,a,5,2022_sugar1
+35,HH37+25mM glucose,HH37,Hh-CA+ura,25mM glucose,b,3,2022_sugar1
+36,HH188,HH188,Hh-CA+ura,,a,2,2022_sugar1
+37,HH188+25mM glucose,HH188,Hh-CA+ura,25mM glucose,a,3,2022_sugar1
+39,HH407+25mM glycerol,HH407,Hh-CA+ura,25mM glycerol,a,4,2022_sugar1
+42,HH408+25mM glycerol,HH408,Hh-CA+ura,25mM glycerol,a,1,2022_sugar1
+44,HH37,HH37,Hh-CA+ura,,b,2,2022_sugar1
+45,HH37,HH37,Hh-CA+ura,,b,1,2022_sugar1
+46,HH408,HH408,Hh-CA+ura,,a,1,2022_sugar1
+47,HH32,HH32,Hh-CA+ura,,a,2,2022_sugar1
+48,HH407,HH407,Hh-CA+ura,,b,2,2022_sugar1
+49,HH407,HH407,Hh-CA+ura,,b,3,2022_sugar1
+52,HH408+25mM glucose,HH408,Hh-CA+ura,25mM glucose,b,4,2022_sugar1
+53,HH32+25mM glycerol,HH32,Hh-CA+ura,25mM glycerol,b,4,2022_sugar1
+54,HH408+25mM glycerol,HH408,Hh-CA+ura,25mM glycerol,b,3,2022_sugar1
+55,HH407+25mM glycerol,HH407,Hh-CA+ura,25mM glycerol,b,4,2022_sugar1
+56,HH188+25mM glycerol,HH188,Hh-CA+ura,25mM glycerol,a,3,2022_sugar1
+57,HH407,HH407,Hh-CA+ura,,a,2,2022_sugar1
+58,HH37+25mM glucose,HH37,Hh-CA+ura,25mM glucose,a,5,2022_sugar1
+62,HH32+25mM glycerol,HH32,Hh-CA+ura,25mM glycerol,b,1,2022_sugar1
+63,HH188+25mM glucose,HH188,Hh-CA+ura,25mM glucose,a,5,2022_sugar1
+64,HH407+25mM glucose,HH407,Hh-CA+ura,25mM glucose,b,3,2022_sugar1
+65,HH188+25mM glycerol,HH188,Hh-CA+ura,25mM glycerol,a,4,2022_sugar1
+66,HH37,HH37,Hh-CA+ura,,a,1,2022_sugar1
+67,HH188+25mM glucose,HH188,Hh-CA+ura,25mM glucose,a,1,2022_sugar1
+68,HH32,HH32,Hh-CA+ura,,a,4,2022_sugar1
+69,HH32,HH32,Hh-CA+ura,,b,4,2022_sugar1
+72,HH188+25mM glucose,HH188,Hh-CA+ura,25mM glucose,b,5,2022_sugar1
+73,HH32+25mM glycerol,HH32,Hh-CA+ura,25mM glycerol,a,2,2022_sugar1
+74,HH37+25mM glucose,HH37,Hh-CA+ura,25mM glucose,a,1,2022_sugar1
+75,HH188+25mM glucose,HH188,Hh-CA+ura,25mM glucose,b,4,2022_sugar1
+76,HH407+25mM glucose,HH407,Hh-CA+ura,25mM glucose,a,3,2022_sugar1
+77,HH188+25mM glycerol,HH188,Hh-CA+ura,25mM glycerol,b,2,2022_sugar1
+78,HH408+25mM glucose,HH408,Hh-CA+ura,25mM glucose,b,2,2022_sugar1
+79,HH37,HH37,Hh-CA+ura,,b,3,2022_sugar1
+82,HH32,HH32,Hh-CA+ura,,b,1,2022_sugar1
+83,HH37+25mM glycerol,HH37,Hh-CA+ura,25mM glycerol,a,3,2022_sugar1
+84,HH407,HH407,Hh-CA+ura,,b,4,2022_sugar1
+85,HH37+25mM glucose,HH37,Hh-CA+ura,25mM glucose,a,2,2022_sugar1
+86,HH407+25mM glucose,HH407,Hh-CA+ura,25mM glucose,a,2,2022_sugar1
+87,HH32+25mM glucose,HH32,Hh-CA+ura,25mM glucose,a,2,2022_sugar1
+89,HH32+25mM glycerol,HH32,Hh-CA+ura,25mM glycerol,b,3,2022_sugar1
+112,HH408,HH408,Hh-CA+ura,,b,1,2022_sugar1
+113,HH32,HH32,Hh-CA+ura,,a,3,2022_sugar1
+114,HH188+25mM glycerol,HH188,Hh-CA+ura,25mM glycerol,b,3,2022_sugar1
+115,HH32+25mM glycerol,HH32,Hh-CA+ura,25mM glycerol,b,2,2022_sugar1
+117,HH32+25mM glucose,HH32,Hh-CA+ura,25mM glucose,b,5,2022_sugar1
+118,HH408+25mM glycerol,HH408,Hh-CA+ura,25mM glycerol,b,4,2022_sugar1
+119,HH188+25mM glycerol,HH188,Hh-CA+ura,25mM glycerol,a,5,2022_sugar1
+122,HH32+25mM glucose,HH32,Hh-CA+ura,25mM glucose,b,2,2022_sugar1
+123,HH407,HH407,Hh-CA+ura,,a,1,2022_sugar1
+124,HH408+25mM glucose,HH408,Hh-CA+ura,25mM glucose,b,3,2022_sugar1
+125,HH408+25mM glycerol,HH408,Hh-CA+ura,25mM glycerol,a,4,2022_sugar1
+126,HH188+25mM glycerol,HH188,Hh-CA+ura,25mM glycerol,b,1,2022_sugar1
+127,HH407+25mM glycerol,HH407,Hh-CA+ura,25mM glycerol,a,3,2022_sugar1
+128,HH408+25mM glycerol,HH408,Hh-CA+ura,25mM glycerol,b,2,2022_sugar1
+129,HH37+25mM glucose,HH37,Hh-CA+ura,25mM glucose,a,3,2022_sugar1
+133,HH188+25mM glucose,HH188,Hh-CA+ura,25mM glucose,b,2,2022_sugar1
+134,HH37+25mM glycerol,HH37,Hh-CA+ura,25mM glycerol,a,5,2022_sugar1
+135,HH32+25mM glycerol,HH32,Hh-CA+ura,25mM glycerol,a,5,2022_sugar1
+136,HH188,HH188,Hh-CA+ura,,b,3,2022_sugar1
+137,HH408,HH408,Hh-CA+ura,,a,2,2022_sugar1
+138,HH188+25mM glycerol,HH188,Hh-CA+ura,25mM glycerol,a,1,2022_sugar1
+139,HH407+25mM glycerol,HH407,Hh-CA+ura,25mM glycerol,b,1,2022_sugar1
+142,HH408+25mM glucose,HH408,Hh-CA+ura,25mM glucose,a,2,2022_sugar1
+143,HH408,HH408,Hh-CA+ura,,b,2,2022_sugar1
+144,HH32+25mM glucose,HH32,Hh-CA+ura,25mM glucose,b,3,2022_sugar1
+145,HH407+25mM glucose,HH407,Hh-CA+ura,25mM glucose,b,2,2022_sugar1
+146,HH408+25mM glycerol,HH408,Hh-CA+ura,25mM glycerol,b,1,2022_sugar1
+147,HH37+25mM glycerol,HH37,Hh-CA+ura,25mM glycerol,a,4,2022_sugar1
+148,HH32+25mM glucose,HH32,Hh-CA+ura,25mM glucose,b,1,2022_sugar1
+149,HH32+25mM glucose,HH32,Hh-CA+ura,25mM glucose,b,4,2022_sugar1
+152,HH188+25mM glucose,HH188,Hh-CA+ura,25mM glucose,b,3,2022_sugar1
+153,HH407+25mM glycerol,HH407,Hh-CA+ura,25mM glycerol,a,1,2022_sugar1
+154,HH188,HH188,Hh-CA+ura,,b,2,2022_sugar1
+155,HH408+25mM glycerol,HH408,Hh-CA+ura,25mM glycerol,a,2,2022_sugar1
+156,HH188,HH188,Hh-CA+ura,,a,1,2022_sugar1
+157,HH407,HH407,Hh-CA+ura,,a,4,2022_sugar1
+158,HH188,HH188,Hh-CA+ura,,a,4,2022_sugar1
+159,HH188+25mM glycerol,HH188,Hh-CA+ura,25mM glycerol,a,2,2022_sugar1
+162,HH188+25mM glucose,HH188,Hh-CA+ura,25mM glucose,a,4,2022_sugar1
+165,HH408,HH408,Hh-CA+ura,,b,4,2022_sugar1
+166,HH37,HH37,Hh-CA+ura,,a,3,2022_sugar1
+167,HH408+25mM glucose,HH408,Hh-CA+ura,25mM glucose,a,3,2022_sugar1
+168,HH188+25mM glucose,HH188,Hh-CA+ura,25mM glucose,b,1,2022_sugar1
+172,HH32,HH32,Hh-CA+ura,,b,2,2022_sugar1
+173,HH407+25mM glucose,HH407,Hh-CA+ura,25mM glucose,a,4,2022_sugar1
+174,HH408+25mM glucose,HH408,Hh-CA+ura,25mM glucose,b,1,2022_sugar1
+175,HH408+25mM glycerol,HH408,Hh-CA+ura,25mM glycerol,a,3,2022_sugar1
+176,HH407+25mM glucose,HH407,Hh-CA+ura,25mM glucose,a,1,2022_sugar1
+177,HH37+25mM glycerol,HH37,Hh-CA+ura,25mM glycerol,a,1,2022_sugar1
+178,HH188,HH188,Hh-CA+ura,,b,1,2022_sugar1
+179,HH407+25mM glucose,HH407,Hh-CA+ura,25mM glucose,b,4,2022_sugar1
+182,HH408+25mM glucose,HH408,Hh-CA+ura,25mM glucose,a,1,2022_sugar1
+183,HH188+25mM glucose,HH188,Hh-CA+ura,25mM glucose,a,2,2022_sugar1
+184,HH407+25mM glucose,HH407,Hh-CA+ura,25mM glucose,b,1,2022_sugar1
+185,HH37,HH37,Hh-CA+ura,,a,2,2022_sugar1
+186,HH37,HH37,Hh-CA+ura,,a,4,2022_sugar1
+187,HH188,HH188,Hh-CA+ura,,a,3,2022_sugar1
+188,HH37+25mM glucose,HH37,Hh-CA+ura,25mM glucose,b,1,2022_sugar1
+189,HH37+25mM glycerol,HH37,Hh-CA+ura,25mM glycerol,a,2,2022_sugar1

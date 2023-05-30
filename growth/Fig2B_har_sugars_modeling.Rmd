@@ -1,0 +1,437 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+```{r, message=F}
+# load required libraries
+library(growthcurver)
+library(viridis)
+library(scales)
+library(tidyverse)
+library(factoextra)
+library(ggpubr)
+library(rstatix)
+
+# custom function, calculated the 95% Confidence interval
+conf_int95 <- function(data) {
+  n <- length(data)
+  error <- qt(0.975, df = n - 1) * sd(data) / sqrt(n)
+  return(error)
+}
+```
+
+# Haloarcula hispanica
+Load the normalized data and meta data. combine difference experiments. 
+```{r}
+expt <- "hca_sugars"
+
+## read in files
+mt1 <- read.csv("normalized_growth_data/2020_sugar1_normalized_layout.csv", stringsAsFactors = F)
+dt1 <- read.csv("normalized_growth_data/2020_sugar1_normalized_data.csv")
+mt2 <- read.csv("normalized_growth_data/2020_sugar2_normalized_layout.csv", stringsAsFactors = F)
+dt2 <- read.csv("normalized_growth_data/2020_sugar2_normalized_data.csv")
+mt3 <- read.csv("normalized_growth_data/2021_sugar3_normalized_layout.csv", stringsAsFactors = F)
+dt3 <- read.csv("normalized_growth_data/2021_sugar3_normalized_data.csv")
+
+## set well no as column names, force conseq numbering
+colnames(dt1) <- c(seq(1, ncol(dt1) - 1), "time")
+mt1$variable <- seq(1, ncol(dt1) - 1)
+
+colnames(dt2) <- c(seq(1, ncol(dt2) - 1) + max(mt1$variable), "time")
+mt2$variable <- seq(1, ncol(dt2) - 1) + max(mt1$variable)
+
+colnames(dt3) <- c(seq(1, ncol(dt3) - 1) + max(mt2$variable), "time")
+mt3$variable <- seq(1, ncol(dt3) - 1) + max(mt2$variable)
+
+## combine meta and data frames across diff experiments
+d <- inner_join(dt1, dt2, by = "time")
+(d <- inner_join(d, dt3, by = "time"))
+mt0 <- rbind(mt1, mt2, mt3)
+
+# combine expt info with biorep info and remove expt column
+mt0$biorep <- paste(mt0$biorep, mt0$expt, sep = "-")
+# mt0 <- mt0[-8]
+
+## replace none with "no carb" for labeling
+mt0$ID <- str_replace_all(mt0$ID, "none", "no carb")
+mt0$condition <- str_replace_all(mt0$condition, "none", "no carb")
+mt0
+
+# bioreps with at least 3 tech reps
+mt0[, c(2, 3, 4, 6, 7)] %>%
+  group_by(ID, biorep) %>%
+  tally() %>%
+  filter(n >= 3) %>%
+  group_by(ID) %>%
+  tally()
+```
+
+### Growth curve modeling
+```{r}
+# Create an output data frame to store the results in.
+num_analyses <- length(names(d)) - 1
+d_gc <- data.frame(
+  sample = character(num_analyses),
+  k = numeric(num_analyses),
+  n0 = numeric(num_analyses),
+  r = numeric(num_analyses),
+  t_mid = numeric(num_analyses),
+  t_gen = numeric(num_analyses),
+  auc_l = numeric(num_analyses),
+  auc_e = numeric(num_analyses),
+  sigma = numeric(num_analyses),
+  stringsAsFactors = FALSE
+)
+
+# Truncate or trim the input data to observations occurring in the first 80 hours.
+trim_at_time <- 80.5
+
+# Loop through all of the columns in the data frame. For each column, run Growthcurver.
+pdf(paste("figures/", expt, "_growthcurver_fits.pdf", sep = ""), height = 8.5, width = 11)
+par(mfcol = c(8, 12))
+par(mar = c(0.25, 0.25, 0.25, 0.25))
+y_lim_max <- max(d[, setdiff(names(d), "time")], na.rm = T) - min(d[, setdiff(names(d), "time")], na.rm = T)
+
+n <- 1 # keeps track of the current row in the output data frame
+for (col_name in names(d)) {
+
+  # Don't process the time column.
+  if (col_name != "time") {
+
+    # Create a temporary data frame that contains just the time and current col
+    d_loop <- d[c("time", col_name)]
+    
+    # Now, call Growthcurver to calculate the metrics using SummarizeGrowth
+    gc_fit <- SummarizeGrowth(
+      data_t = d_loop$time,
+      data_n = d_loop[col_name],
+      t_trim = trim_at_time,
+      bg_correct = "none"
+    )
+
+    if (gc_fit$vals[[16]] == "cannot fit data") {
+      d_gc$sample[n] <- col_name
+      n <- n + 1
+    } else {
+      d_gc$sample[n] <- col_name
+      d_gc[n, 2:9] <- c(
+        gc_fit$vals$k,
+        gc_fit$vals$n0,
+        gc_fit$vals$r,
+        gc_fit$vals$t_mid,
+        gc_fit$vals$t_gen,
+        gc_fit$vals$auc_l,
+        gc_fit$vals$auc_e,
+        gc_fit$vals$sigma
+      )
+
+      n <- n + 1
+      # Finally, plot the raw data and the fitted curve. print some of the data points to keep the file size smaller
+      n_obs <- length(gc_fit$data$t)
+      idx_to_plot <- 1:20 / 20 * n_obs
+      plot(gc_fit$data$t[idx_to_plot], gc_fit$data$N[idx_to_plot],
+        pch = 20,
+        xlim = c(0, trim_at_time),
+        ylim = c(0, y_lim_max),
+        cex = 0.6, xaxt = "n", yaxt = "n"
+      )
+      text(x = trim_at_time / 4, y = y_lim_max, labels = col_name, pos = 1)
+      lines(gc_fit$data$t, predict(gc_fit$model), col = "red")
+    }
+  }
+}
+dev.off()
+d_gc
+```
+
+graph fitted curves:
+```{r, message=F}
+fitted_curves <- list()
+
+n <- 1 # keeps track of the current row in the output data frame
+for (col_name in names(d)) {
+  if (col_name != "time") {
+    d_loop <- d[c("time", col_name)]
+    gc_fit <- SummarizeGrowth(
+      data_t = d_loop$time,
+      data_n = d_loop[col_name],
+      t_trim = trim_at_time,
+      bg_correct = "none"
+    )
+    if (gc_fit$vals[[16]] == "cannot fit data") {
+      d_gc$sample[n] <- col_name
+      n <- n + 1
+    } else {
+      fitted_curves[[n]] <- predict(gc_fit$model)
+      names(fitted_curves)[n] <- col_name
+      n <- n + 1
+    }
+  }
+}
+
+tmp <- Filter(length, fitted_curves)
+fits <- as.data.frame(tmp, col.names = names(tmp))
+colnames(fits) <- names(tmp)
+fits <- cbind("time" = d$time[d$time < trim_at_time], fits)
+
+# re-zero lowest value
+mins <- Rfast::colMins(as.matrix(fits), value = T) # get column minimums
+fits <- sweep(fits, 2, mins, "-") # subtract smallest value for each column
+
+# Convert data from wide to long format
+m_dt <- reshape2::melt(fits, id = "time")
+mtdt <- merge(m_dt, mt0, by = "variable")
+well <- paste(mtdt$variable, mtdt$ID, sep = " ")
+mtdt <- cbind(well, mtdt)
+
+t_mtdt2 <- mtdt[!(mtdt$ID == ""), ]
+
+stats2 <- t_mtdt2 %>%
+  group_by(ID, strain, condition, time) %>%
+  summarise(
+    reps = length(value),
+    average = mean(value) + 1,
+    CI95 = conf_int95(value)
+  )
+unique(stats2$strain)
+
+# all conditions tested.
+stats2 %>%
+  ggplot(., aes(x = time, y = log10(average), color = strain)) +
+  xlab("time (h)") +
+  ylab("log10(OD)") +
+  geom_line(size = 1) +
+  scale_y_continuous(limits = c(0, 0.13)) +
+  scale_x_continuous(limits = c(0, 80)) +
+  geom_ribbon(aes(ymin = log10(average - CI95), ymax = log10(average + CI95), fill = strain, color = NULL), alpha = 0.2) +
+  scale_fill_viridis("strain", discrete = TRUE, begin = 0.1, end = 0.9) +
+  scale_color_viridis("strain", discrete = TRUE, begin = 0.1, end = 0.9) +
+  theme_bw() +
+  facet_wrap(~condition, nrow = 2) +
+  theme(
+    axis.title.x = element_text(face = "bold", size = 10, angle = 0), axis.title.y = element_text(face = "bold", size = 10, angle = 90),
+    axis.text.y = element_text(size = 8, angle = 0), axis.text.x = element_text(size = 8, angle = 0),
+    axis.ticks.length.y.left = unit(.05, "cm"), strip.text = element_text(size = 10),
+    strip.background = element_blank(), strip.placement = "outside",
+    legend.position = "bottom"
+  ) -> curves
+plot(curves)
+
+png(paste("figures/", expt, "_curves_supp.png", sep = ""), width = 6, height = 4, units = "in", res = 1200, bg = "transparent")
+plot(curves)
+dev.off()
+
+pdf(paste("figures/", expt, "_curves_supp.pdf", sep = ""), width = 6, height = 4, bg = "transparent")
+plot(curves)
+dev.off()
+```
+
+insets
+```{r}
+stats2$condition <- factor(stats2$condition, levels = c("25mM sucrose", "25mM glucose", "25mM glycerol", "25mM fructose", "25mM xylose", "25mM galactose", "25mM ribose", "25mM pyruvate", "25mM acetate", "no carb"))
+
+stats2 %>%
+  filter(strain == "trmB") %>%
+  ggplot(., aes(x = time, y = log10(average), color = condition)) +
+  geom_line(size = 1) +
+  geom_ribbon(aes(ymin = log10(average - CI95), ymax = log10(average + CI95), fill = condition, color = NULL), alpha = 0.2) +
+  xlab("time (h)") +
+  ylab("log10(Optical Denisty)") +
+  scale_x_continuous(limits = c(0, 80), expand = c(0, 0)) +
+  scale_fill_viridis("condition", discrete = TRUE, begin = 0.1, end = 0.9, direction = -1) +
+  scale_color_viridis("condition", discrete = TRUE, begin = 0.1, end = 0.9, direction = -1) +
+  theme_bw() +
+  theme(
+    axis.title.x = element_text(face = "bold", size = 14, angle = 0),
+    axis.title.y = element_text(face = "bold", size = 14, angle = 90),
+    axis.ticks = element_blank(), legend.position = "none"
+  ) -> inset
+plot(inset)
+
+png(paste("figures/", expt, "_inset.png", sep = ""), width = 3, height = 3, units = "in", res = 1200, bg = "transparent")
+plot(inset)
+dev.off()
+
+pdf(paste("figures/", expt, "_inset.pdf", sep = ""), width = 3, height = 3, bg = "transparent")
+plot(inset)
+dev.off()
+```
+
+# TrmB normalized to WT by condition
+take average of WT bioreps. calculate ratios of individual trmB bioreps. then average and calc SD/std err.
+```{r, message=FALSE}
+colnames(d_gc)[1] <- "variable"
+merge(d_gc, mt0) -> tmp
+
+tmp %>%
+  group_by(strain, condition, biorep, ID, media) %>%
+  summarise(avg_auc = mean(auc_e)) %>% # average technical replicates
+  group_by(condition, biorep) %>%
+  summarise(rat_auc = avg_auc[strain == "trmB"] / avg_auc[strain == "WT"]) %>%
+  group_by(condition) %>% # average ratios and calc sd
+  summarise(
+    avg_auc = mean(rat_auc),
+    auc_sd = sd(rat_auc)
+  ) -> norms.hca
+
+# factorize for sorting
+norms.hca$condition <- factor(norms.hca$condition)
+
+# TrmB parameters normalized to WT (by condition)
+norms.hca %>%
+  slice(8, 4, 5, 2, 9, 3, 7, 6, 1, 10) %>%
+  mutate(condition = factor(condition, levels = condition)) %>%
+  ggplot(aes(x = condition, y = avg_auc)) +
+  xlab("") +
+  ylab(expression("AUC"[" trmB" / " parent"])) +
+  geom_hline(yintercept = 1, size = 1, linetype = "dashed", alpha = 0.3) +
+  geom_bar(stat = "identity", aes(fill = condition)) +
+  geom_errorbar(aes(ymin = avg_auc - auc_sd, ymax = avg_auc + auc_sd),
+    width = .1, size = 1, position = position_dodge(.9)
+  ) +
+  scale_fill_viridis("x", discrete = TRUE, begin = 0.1, end = 0.9, direction = -1) +
+  scale_y_continuous(limits = c(0, 1.1), expand = expansion(mult = c(0, 0.02))) +
+  theme_bw() +
+  theme(
+    axis.title.y = element_text(face = "plain", color = "#000000", size = 14, angle = 90),
+    axis.text.y = element_text(face = "plain", color = "#000000", size = 12, angle = 0),
+    axis.text.x = element_text(face = "plain", color = "#000000", size = 12, angle = 45, hjust = 1),
+    panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+    legend.position = "none"
+  ) -> figure
+plot(figure)
+
+png(paste("figures/", expt, "_AUC_plot.png", sep = ""), width = 10, height = 5, units = "in", res = 1200, bg = "transparent")
+plot(figure)
+dev.off()
+
+pdf(paste("figures/", expt, "_AUC_plot.pdf", sep = ""), width = 10, height = 5, bg = "transparent")
+plot(figure)
+dev.off()
+
+# Testing for significance 
+tmp %>%
+  group_by(strain, condition, biorep, ID) %>%
+  summarise(avg_auc = mean(auc_e)) -> tmp2
+
+for (i in 1:length(unique(tmp2$condition))) {
+  cond <- unique(tmp2$condition)[i]
+  trmB <- paste("trmB", cond, sep = "+")
+  wt <- paste("WT", cond, sep = "+")
+  one <- filter(tmp2, ID == trmB)$avg_auc
+  two <- filter(tmp2, ID == wt)$avg_auc
+  test <- t.test(one, two, alternative = "less")
+  print(paste("AUC difference in", cond, "is significant with p-value of ", round(test$p.value, digits = 8)))
+}
+```
+
+## comparing conditions by strain
+```{r, message=FALSE, fig.width=8, fig.height=4}
+# average no sugar
+tmp %>%
+  filter(strain == "WT" & condition == "no carb") %>%
+  group_by(strain, condition) %>%
+  summarise(avg_auc = mean(auc_e)) -> wt.nocarb
+tmp %>%
+  filter(strain == "trmB" & condition == "no carb") %>%
+  group_by(strain, condition) %>%
+  summarise(avg_auc = mean(auc_e)) -> trmb.nocarb
+
+# split wt and trmB
+tmp %>%
+  filter(strain == "WT") %>%
+  group_by(strain, condition, biorep) %>%
+  summarise(
+    auc = mean(auc_e),
+    auc.rat = auc / wt.nocarb$avg_auc
+  ) %>% # take ratio
+  group_by(strain, condition) %>%
+  summarise(
+    avg.auc.rat = mean(auc.rat),
+    sd.auc.rat = sd(auc.rat)
+  ) -> reps.wt
+
+tmp %>%
+  filter(strain == "trmB") %>%
+  group_by(strain, condition, biorep) %>%
+  summarise(
+    auc = mean(auc_e),
+    auc.rat = auc / trmb.nocarb$avg_auc
+  ) %>% # take ratio
+  group_by(strain, condition) %>%
+  summarise(
+    avg.auc.rat = mean(auc.rat),
+    sd.auc.rat = sd(auc.rat)
+  ) -> reps.t
+
+# combine into single DF
+rbind(reps.t, reps.wt) -> test
+
+# graph with facets
+test %>%
+  arrange(desc(avg.auc.rat)) %>%
+  mutate(condition = factor(condition, levels = condition)) %>%
+  ggplot(aes(x = condition, y = avg.auc.rat, fill = strain)) +
+  ylab(expression("AUC" / "AUC"[" average no carb"])) +
+  xlab("") +
+  geom_hline(yintercept = 1, size = 0.5, linetype = "dashed") +
+  geom_bar(stat = "identity", alpha = 0.8, position = "dodge") +
+  geom_errorbar(aes(ymin = avg.auc.rat - sd.auc.rat, ymax = avg.auc.rat + sd.auc.rat),
+    width = .15, size = .7, position = position_dodge(.9)
+  ) +
+  facet_wrap(~strain, nrow = 2) +
+  scale_fill_viridis("strain", discrete = TRUE, begin = 0.1, end = 0.9) +
+  scale_y_continuous(limits = c(0,8), expand = expansion(mult = c(0, 0.02))) +
+  theme_bw() +
+  theme(
+    axis.title.y = element_text(face = "bold", color = "#000000", size = 10, angle = 90),
+    axis.text.y = element_text(face = "plain", color = "#000000", size = 10, angle = 0),
+    axis.text.x = element_text(face = "plain", color = "#000000", size = 10, angle = 45, hjust = 1),
+    panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+    strip.text = element_text(face = "bold", size = 12), strip.background = element_blank(), strip.placement = "outside",
+    legend.position = "none"
+  ) -> no.carb.AUC
+
+plot(no.carb.AUC)
+
+png(paste("figures/", expt, "_AUCs_supp.png", sep = ""), width = 4, height = 6, units = "in", res = 1200, bg = "transparent")
+plot(no.carb.AUC)
+dev.off()
+
+pdf(paste("figures/", expt, "_AUCs_supp.pdf", sep = ""), width = 4, height = 6, bg = "transparent")
+plot(no.carb.AUC)
+dev.off()
+```
+
+```{r}
+# Testing for significance 
+tmp %>%
+  filter(strain == "WT") %>%
+  group_by(strain, condition, biorep) %>%
+  summarise(
+    auc = mean(auc_e)
+  ) -> tmp2
+
+for (i in 1:9) {
+  cond <- unique(tmp2$condition)[i]
+  one <- filter(tmp2, condition == cond)$auc
+  two <- filter(tmp2, condition == "no carb")$auc
+  test <- t.test(one, two, alternative = "two.sided")
+  print(paste("AUC difference in", cond, "is significant with p-value of ", round(test$p.value, digits = 10)))
+}
+
+tmp %>%
+  filter(strain == "trmB") %>%
+  group_by(strain, condition, biorep) %>%
+  summarise(
+    auc = mean(auc_e)
+  ) -> tmp2
+
+for (i in 1:9) {
+  cond <- unique(tmp2$condition)[i]
+  one <- filter(tmp2, condition == cond)$auc
+  two <- filter(tmp2, condition == "no carb")$auc
+  test <- t.test(one, two, alternative = "two.sided")
+  print(paste("AUC difference in", cond, "is significant with p-value of ", round(test$p.value, digits = 10)))
+}
+```

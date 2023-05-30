@@ -1,0 +1,201 @@
+well,strain,media,condition,biorep,techrep
+1,blank,HhCa,25mM acetate,,
+2,blank,HhCa,25mM ribose,,
+3,blank,HhCa,25mM glycerol,,
+4,blank,HhCa,25mM pyruvate,,
+5,blank,HhCa,25mM glucose,,
+6,blank,HhCa,25mM glycerol,,
+7,blank,HhCa,25mM pyruvate,,
+8,blank,HhCa,none,,
+9,blank,HhCa,none,,
+10,blank,HhCa,25mM galactose,,
+11,blank,HhCa,25mM pyruvate,,
+17,trmB,HhCa,25mM glycerol,1,2
+13,WT,HhCa,25mM ribose,1,1
+15,WT,HhCa,25mM xylose,1,2
+18,WT,HhCa,25mM glycerol,1,2
+22,WT,HhCa,25mM pyruvate,1,1
+19,trmB,HhCa,25mM galactose,1,3
+23,WT,HhCa,25mM ribose,1,3
+24,trmB,HhCa,none,1,2
+20,blank,HhCa,none,,
+21,blank,HhCa,25mM xylose,,
+34,WT,HhCa,25mM xylose,1,3
+43,WT,HhCa,25mM ribose,1,2
+25,trmB,HhCa,25mM fructose,1,2
+26,trmB,HhCa,25mM acetate,1,2
+29,trmB,HhCa,25mM glucose,1,2
+35,trmB,HhCa,25mM glycerol,1,3
+39,trmB,HhCa,25mM glucose,1,1
+59,trmB,HhCa,none,1,3
+30,blank,HhCa,25mM fructose,,
+31,blank,HhCa,25mM xylose,,
+65,trmB,HhCa,25mM xylose,1,3
+45,WT,HhCa,25mM xylose,1,1
+47,WT,HhCa,none,1,1
+68,trmB,HhCa,25mM galactose,1,1
+73,trmB,HhCa,25mM acetate,1,3
+75,trmB,HhCa,25mM fructose,1,3
+85,trmB,HhCa,25mM galactose,1,2
+114,trmB,HhCa,25mM xylose,1,2
+40,blank,HhCa,25mM pyruvate,,
+41,blank,HhCa,25mM glucose,,
+49,WT,HhCa,25mM galactose,1,3
+52,WT,HhCa,none,1,2
+56,WT,HhCa,25mM glycerol,1,1
+63,WT,HhCa,25mM pyruvate,1,3
+119,trmB,HhCa,25mM sucrose,1,2
+76,WT,HhCa,25mM glycerol,1,3
+79,WT,HhCa,25mM sucrose,1,2
+84,WT,HhCa,25mM glucose,1,2
+50,blank,HhCa,25mM glucose,,
+51,blank,HhCa,25mM sucrose,,
+87,WT,HhCa,25mM galactose,1,1
+125,trmB,HhCa,none,1,1
+88,WT,HhCa,25mM fructose,1,3
+122,WT,HhCa,25mM acetate,1,2
+126,WT,HhCa,25mM pyruvate,1,2
+132,WT,HhCa,25mM galactose,1,2
+139,WT,HhCa,25mM fructose,1,2
+129,trmB,HhCa,25mM xylose,1,1
+60,blank,HhCa,25mM glycerol,,
+61,blank,HhCa,25mM galactose,,
+133,trmB,HhCa,25mM ribose,1,2
+142,WT,HhCa,25mM fructose,1,1
+143,trmB,HhCa,25mM sucrose,1,3
+147,trmB,HhCa,25mM fructose,1,1
+145,WT,HhCa,25mM acetate,1,3
+149,trmB,HhCa,25mM pyruvate,1,3
+152,trmB,HhCa,25mM pyruvate,1,1
+154,WT,HhCa,25mM glucose,1,3
+70,blank,HhCa,25mM glycerol,,
+71,blank,HhCa,25mM ribose,,
+155,WT,HhCa,25mM acetate,1,1
+156,trmB,HhCa,25mM ribose,1,1
+163,WT,HhCa,25mM glucose,1,1
+157,trmB,HhCa,25mM glucose,1,3
+167,WT,HhCa,none,1,3
+175,WT,HhCa,25mM sucrose,1,1
+162,trmB,HhCa,25mM acetate,1,1
+176,WT,HhCa,25mM sucrose,1,3
+80,blank,HhCa,25mM sucrose,,
+81,blank,HhCa,25mM glucose,,
+14,WT,HhCa,25mM fructose,2,1
+164,trmB,HhCa,25mM glycerol,1,1
+16,WT,HhCa,25mM xylose,2,3
+173,trmB,HhCa,25mM pyruvate,1,2
+177,trmB,HhCa,25mM sucrose,1,1
+33,WT,HhCa,25mM galactose,2,3
+42,WT,HhCa,25mM pyruvate,2,3
+44,WT,HhCa,none,2,3
+90,blank,HhCa,25mM acetate,,
+91,blank,HhCa,25mM xylose,,
+92,blank,HhCa,25mM xylose,,
+93,blank,HhCa,25mM acetate,,
+94,blank,HhCa,25mM fructose,,
+95,blank,HhCa,25mM fructose,,
+96,blank,HhCa,25mM glucose,,
+97,blank,HhCa,25mM glucose,,
+98,blank,HhCa,25mM ribose,,
+99,blank,HhCa,25mM acetate,,
+100,blank,HhCa,25mM xylose,,
+101,blank,HhCa,25mM glucose,,
+102,blank,HhCa,25mM fructose,,
+103,blank,HhCa,25mM sucrose,,
+104,blank,HhCa,none,,
+105,blank,HhCa,25mM ribose,,
+106,blank,HhCa,25mM acetate,,
+107,blank,HhCa,25mM xylose,,
+108,blank,HhCa,25mM galactose,,
+109,blank,HhCa,25mM galactose,,
+110,blank,HhCa,25mM galactose,,
+111,blank,HhCa,25mM pyruvate,,
+48,WT,HhCa,25mM acetate,2,1
+178,trmB,HhCa,25mM ribose,1,3
+12,trmB,HhCa,25mM galactose,2,2
+54,WT,HhCa,25mM sucrose,2,1
+27,trmB,HhCa,25mM galactose,2,1
+55,WT,HhCa,25mM pyruvate,2,1
+28,trmB,HhCa,25mM glycerol,2,1
+32,trmB,HhCa,25mM sucrose,2,3
+120,blank,HhCa,25mM xylose,,
+121,blank,HhCa,25mM acetate,,
+57,WT,HhCa,25mM acetate,2,2
+58,WT,HhCa,25mM glycerol,2,1
+36,trmB,HhCa,25mM glycerol,2,3
+37,trmB,HhCa,25mM acetate,2,2
+66,WT,HhCa,none,2,1
+69,WT,HhCa,25mM galactose,2,2
+38,trmB,HhCa,25mM acetate,2,1
+46,trmB,HhCa,25mM ribose,2,2
+130,blank,HhCa,25mM ribose,,
+131,blank,HhCa,25mM xylose,,
+72,WT,HhCa,25mM glucose,2,2
+53,trmB,HhCa,25mM fructose,2,1
+74,WT,HhCa,25mM xylose,2,2
+62,trmB,HhCa,25mM glucose,2,1
+77,WT,HhCa,25mM galactose,2,1
+82,WT,HhCa,25mM acetate,2,3
+89,WT,HhCa,25mM ribose,2,2
+112,WT,HhCa,25mM glucose,2,1
+140,blank,HhCa,none,,
+141,blank,HhCa,25mM glycerol,,
+115,WT,HhCa,25mM xylose,2,1
+64,trmB,HhCa,none,2,2
+67,trmB,HhCa,25mM fructose,2,3
+117,WT,HhCa,none,2,2
+78,trmB,HhCa,none,2,3
+83,trmB,HhCa,25mM xylose,2,3
+86,trmB,HhCa,25mM glucose,2,2
+113,trmB,HhCa,25mM acetate,2,3
+150,blank,HhCa,25mM pyruvate,,
+151,blank,HhCa,25mM glycerol,,
+116,trmB,HhCa,25mM fructose,2,2
+118,trmB,HhCa,25mM glucose,2,3
+123,WT,HhCa,25mM sucrose,2,3
+127,WT,HhCa,25mM glucose,2,3
+124,trmB,HhCa,25mM pyruvate,2,1
+128,trmB,HhCa,25mM pyruvate,2,3
+135,trmB,HhCa,25mM ribose,2,3
+144,trmB,HhCa,25mM xylose,2,2
+160,blank,HhCa,none,,
+161,blank,HhCa,25mM acetate,,
+146,trmB,HhCa,25mM glycerol,2,2
+134,WT,HhCa,25mM ribose,2,3
+148,trmB,HhCa,25mM pyruvate,2,2
+136,WT,HhCa,25mM glycerol,2,2
+137,WT,HhCa,25mM sucrose,2,2
+138,WT,HhCa,25mM fructose,2,2
+153,trmB,HhCa,25mM ribose,2,1
+158,trmB,HhCa,25mM sucrose,2,2
+170,blank,HhCa,25mM sucrose,,
+171,blank,HhCa,25mM fructose,,
+159,trmB,HhCa,25mM sucrose,2,1
+168,trmB,HhCa,none,2,1
+165,WT,HhCa,25mM glycerol,2,3
+166,WT,HhCa,25mM ribose,2,1
+174,WT,HhCa,25mM fructose,2,3
+169,trmB,HhCa,25mM xylose,2,1
+172,trmB,HhCa,25mM galactose,2,3
+179,WT,HhCa,25mM pyruvate,2,2
+180,blank,HhCa,25mM sucrose,,
+181,blank,HhCa,25mM galactose,,
+182,trmB,HhCa,none,3,1
+183,trmB,HhCa,none,3,2
+184,trmB,HhCa,none,3,3
+185,trmB,HhCa,none,3,4
+186,WT,HhCa,none,3,1
+187,WT,HhCa,none,3,2
+188,WT,HhCa,none,3,3
+189,WT,HhCa,none,3,4
+190,blank,HhCa,25mM glycerol,,
+191,blank,HhCa,25mM ribose,,
+192,blank,HhCa,25mM galactose,,
+193,blank,HhCa,25mM sucrose,,
+194,blank,HhCa,25mM galactose,,
+195,blank,HhCa,none,,
+196,blank,HhCa,25mM sucrose,,
+197,blank,HhCa,25mM fructose,,
+198,blank,HhCa,25mM glucose,,
+199,blank,HhCa,25mM ribose,,
+200,blank,HhCa,25mM sucrose,,

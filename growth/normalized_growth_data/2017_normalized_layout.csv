@@ -1,0 +1,121 @@
+variable,ID,strain,biorep,media,condition,techrep,expt
+12,trmB+0%,trmB,1,HhCa,0%,1,2017
+13,trmB+0%,trmB,2,HhCa,0%,1,2017
+14,trmB+0%,trmB,3,HhCa,0%,1,2017
+15,WT+0%,WT,1,HhCa,0%,1,2017
+16,WT+0%,WT,2,HhCa,0%,1,2017
+17,WT+0%,WT,3,HhCa,0%,1,2017
+18,trmB+0%,trmB,1,HhCa,0%,2,2017
+19,trmB+0%,trmB,2,HhCa,0%,2,2017
+22,trmB+0%,trmB,3,HhCa,0%,2,2017
+23,trmB+0.01% glucose,trmB,1,HhCa,0.01% glucose,1,2017
+24,trmB+0.01% glucose,trmB,2,HhCa,0.01% glucose,1,2017
+25,trmB+0.01% glucose,trmB,3,HhCa,0.01% glucose,1,2017
+26,WT+0.01% glucose,WT,1,HhCa,0.01% glucose,1,2017
+27,WT+0.01% glucose,WT,2,HhCa,0.01% glucose,1,2017
+28,WT+0.01% glucose,WT,3,HhCa,0.01% glucose,1,2017
+29,trmB+0.01% glucose,trmB,1,HhCa,0.01% glucose,2,2017
+32,WT+0.05% glucose,WT,3,HhCa,0.05% glucose,1,2017
+33,WT+0.05% glucose,WT,2,HhCa,0.05% glucose,1,2017
+34,WT+0.05% glucose,WT,1,HhCa,0.05% glucose,1,2017
+35,trmB+0.05% glucose,trmB,3,HhCa,0.05% glucose,1,2017
+36,trmB+0.05% glucose,trmB,2,HhCa,0.05% glucose,1,2017
+37,trmB+0.05% glucose,trmB,1,HhCa,0.05% glucose,1,2017
+38,trmB+0.01% glucose,trmB,3,HhCa,0.01% glucose,2,2017
+39,trmB+0.01% glucose,trmB,2,HhCa,0.01% glucose,2,2017
+42,trmB+0.05% glucose,trmB,1,HhCa,0.05% glucose,2,2017
+43,trmB+0.05% glucose,trmB,2,HhCa,0.05% glucose,2,2017
+44,trmB+0.05% glucose,trmB,3,HhCa,0.05% glucose,2,2017
+45,trmB+0.1% glucose,trmB,1,HhCa,0.1% glucose,1,2017
+46,trmB+0.1% glucose,trmB,2,HhCa,0.1% glucose,1,2017
+47,trmB+0.1% glucose,trmB,3,HhCa,0.1% glucose,1,2017
+48,WT+0.1% glucose,WT,1,HhCa,0.1% glucose,1,2017
+49,WT+0.1% glucose,WT,2,HhCa,0.1% glucose,1,2017
+52,WT+0.5% glucose,WT,1,HhCa,0.5% glucose,1,2017
+53,trmB+0.5% glucose,trmB,3,HhCa,0.5% glucose,1,2017
+54,trmB+0.5% glucose,trmB,2,HhCa,0.5% glucose,1,2017
+55,trmB+0.5% glucose,trmB,1,HhCa,0.5% glucose,1,2017
+56,trmB+0.1% glucose,trmB,3,HhCa,0.1% glucose,2,2017
+57,trmB+0.1% glucose,trmB,2,HhCa,0.1% glucose,2,2017
+58,trmB+0.1% glucose,trmB,1,HhCa,0.1% glucose,2,2017
+59,WT+0.1% glucose,WT,3,HhCa,0.1% glucose,1,2017
+62,WT+0.5% glucose,WT,2,HhCa,0.5% glucose,1,2017
+63,WT+0.5% glucose,WT,3,HhCa,0.5% glucose,1,2017
+64,trmB+0.5% glucose,trmB,1,HhCa,0.5% glucose,2,2017
+65,trmB+0.5% glucose,trmB,2,HhCa,0.5% glucose,2,2017
+66,trmB+0.5% glucose,trmB,3,HhCa,0.5% glucose,2,2017
+67,trmB+1% glucose,trmB,1,HhCa,1% glucose,1,2017
+68,trmB+1% glucose,trmB,2,HhCa,1% glucose,1,2017
+69,trmB+1% glucose,trmB,3,HhCa,1% glucose,1,2017
+72,trmB+2% glucose,trmB,2,HhCa,2% glucose,1,2017
+73,trmB+2% glucose,trmB,1,HhCa,2% glucose,1,2017
+74,trmB+1% glucose,trmB,3,HhCa,1% glucose,2,2017
+75,trmB+1% glucose,trmB,2,HhCa,1% glucose,2,2017
+76,trmB+1% glucose,trmB,1,HhCa,1% glucose,2,2017
+77,WT+1% glucose,WT,3,HhCa,1% glucose,1,2017
+78,WT+1% glucose,WT,2,HhCa,1% glucose,1,2017
+79,WT+1% glucose,WT,1,HhCa,1% glucose,1,2017
+82,trmB+2% glucose,trmB,3,HhCa,2% glucose,1,2017
+83,WT+2% glucose,WT,1,HhCa,2% glucose,1,2017
+84,WT+2% glucose,WT,2,HhCa,2% glucose,1,2017
+85,WT+2% glucose,WT,3,HhCa,2% glucose,1,2017
+86,trmB+2% glucose,trmB,1,HhCa,2% glucose,2,2017
+87,trmB+2% glucose,trmB,2,HhCa,2% glucose,2,2017
+88,trmB+2% glucose,trmB,3,HhCa,2% glucose,2,2017
+89,WT+0%,WT,1,HhCa,0%,1,2017
+113,WT+2% glucose,WT,1,HhCa,2% glucose,2,2017
+114,WT+2% glucose,WT,2,HhCa,2% glucose,2,2017
+115,WT+2% glucose,WT,3,HhCa,2% glucose,2,2017
+116,WT+2% glucose,WT,1,HhCa,2% glucose,3,2017
+117,WT+2% glucose,WT,2,HhCa,2% glucose,3,2017
+118,WT+2% glucose,WT,3,HhCa,2% glucose,3,2017
+122,trmB+2% glucose,trmB,2,HhCa,2% glucose,3,2017
+123,trmB+2% glucose,trmB,1,HhCa,2% glucose,3,2017
+124,WT+1% glucose,WT,3,HhCa,1% glucose,2,2017
+125,WT+1% glucose,WT,2,HhCa,1% glucose,2,2017
+126,WT+1% glucose,WT,1,HhCa,1% glucose,2,2017
+127,trmB+1% glucose,trmB,3,HhCa,1% glucose,3,2017
+128,trmB+1% glucose,trmB,2,HhCa,1% glucose,3,2017
+129,trmB+1% glucose,trmB,1,HhCa,1% glucose,3,2017
+132,trmB+0.5% glucose,trmB,2,HhCa,0.5% glucose,3,2017
+133,trmB+0.5% glucose,trmB,3,HhCa,0.5% glucose,3,2017
+134,WT+0.5% glucose,WT,1,HhCa,0.5% glucose,2,2017
+135,WT+0.5% glucose,WT,2,HhCa,0.5% glucose,2,2017
+136,WT+0.5% glucose,WT,3,HhCa,0.5% glucose,2,2017
+137,WT+1% glucose,WT,1,HhCa,1% glucose,3,2017
+138,WT+1% glucose,WT,2,HhCa,1% glucose,3,2017
+139,WT+1% glucose,WT,3,HhCa,1% glucose,3,2017
+142,trmB+0.5% glucose,trmB,1,HhCa,0.5% glucose,3,2017
+143,WT+0.5% glucose,WT,3,HhCa,0.5% glucose,3,2017
+144,WT+0.5% glucose,WT,2,HhCa,0.5% glucose,3,2017
+145,WT+0.5% glucose,WT,1,HhCa,0.5% glucose,3,2017
+146,WT+0.1% glucose,WT,3,HhCa,0.1% glucose,2,2017
+147,WT+0.1% glucose,WT,2,HhCa,0.1% glucose,2,2017
+148,WT+0.1% glucose,WT,1,HhCa,0.1% glucose,2,2017
+149,trmB+0.1% glucose,trmB,3,HhCa,0.1% glucose,3,2017
+152,WT+0.05% glucose,WT,1,HhCa,0.05% glucose,2,2017
+153,WT+0.05% glucose,WT,2,HhCa,0.05% glucose,2,2017
+154,WT+0.05% glucose,WT,3,HhCa,0.05% glucose,2,2017
+155,WT+0.1% glucose,WT,1,HhCa,0.1% glucose,3,2017
+156,WT+0.1% glucose,WT,2,HhCa,0.1% glucose,3,2017
+164,trmB+0.05% glucose,trmB,1,HhCa,0.05% glucose,3,2017
+165,WT+0.05% glucose,WT,3,HhCa,0.05% glucose,3,2017
+166,WT+0.05% glucose,WT,2,HhCa,0.05% glucose,3,2017
+167,WT+0.05% glucose,WT,1,HhCa,0.05% glucose,3,2017
+168,WT+0.01% glucose,WT,3,HhCa,0.01% glucose,2,2017
+169,WT+0.01% glucose,WT,2,HhCa,0.01% glucose,2,2017
+173,WT+0.01% glucose,WT,1,HhCa,0.01% glucose,3,2017
+174,WT+0.01% glucose,WT,2,HhCa,0.01% glucose,3,2017
+175,WT+0.01% glucose,WT,3,HhCa,0.01% glucose,3,2017
+176,trmB+0.01% glucose,trmB,1,HhCa,0.01% glucose,3,2017
+177,trmB+0.01% glucose,trmB,2,HhCa,0.01% glucose,3,2017
+178,trmB+0.01% glucose,trmB,3,HhCa,0.01% glucose,3,2017
+179,WT+0.01% glucose,WT,1,HhCa,0.01% glucose,3,2017
+182,WT+0%,WT,2,HhCa,0%,2,2017
+183,WT+0%,WT,1,HhCa,0%,2,2017
+184,trmB+0%,trmB,3,HhCa,0%,3,2017
+185,trmB+0%,trmB,2,HhCa,0%,3,2017
+186,trmB+0%,trmB,1,HhCa,0%,3,2017
+187,WT+0%,WT,3,HhCa,0%,3,2017
+188,WT+0%,WT,2,HhCa,0%,3,2017
+189,WT+0%,WT,1,HhCa,0%,3,2017

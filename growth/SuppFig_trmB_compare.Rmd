@@ -1,0 +1,389 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+```{r}
+# load required libraries
+library(tidyverse)
+library(viridis)
+library(growthcurver)
+library(scales)
+library(ggpubr)
+library(rstatix)
+
+# custom function, calculated the 95% Confidence interval
+conf_int95 <- function(data) {
+  n <- length(data)
+  error <- qt(0.975, df = n - 1) * sd(data) / sqrt(n)
+  return(error)
+}
+```
+
+##This is where we load the raw data files from the bioscreen, and your plate layout file (called metafile)
+Some code also removes rows and columns with data we don't need or that are empty. experiment #1.
+```{r}
+expt <- "trmB_deletion_compare"
+
+# set path to files
+data <- "raw_growth_data/20220227_hca_trmBs_data.csv"
+meta <- "raw_growth_data/20220227_hca_trmBs_meta.csv"
+
+## read in files
+mt <- read.csv(meta, stringsAsFactors = F)
+mt$expt <- rep(expt, nrow(mt))
+dt <- read.csv(data)
+
+# set well no as column names
+colnames(dt) <- c("time", seq(1, ncol(dt) - 1))
+
+# remove the first 3 hours, or 6 timepoints.
+dt0 <- dt
+dt0 <- dt0[-(1:6), ]
+dt0$time <- seq(0, length.out = nrow(dt0), by = 0.5) # redo time points
+dt0 <- dt0[complete.cases(dt0), ]
+```
+
+```{r}
+unite(mt, "ID", c("strain", "condition"), sep = "+")$ID %>%
+  str_replace_all(., "\\+$", "") -> ID
+
+# Save new metafile as a different variable. This is good practice!
+mt0 <- cbind("variable" = mt$well, ID, mt[-1], stringsAsFactors = F)
+mt0 <- mt0 %>% arrange(variable)
+
+## remove rows based on observation (input own row names!!)
+mt0 <- mt0 %>% dplyr::slice(-c(10, 110, 20, 88))
+dt0 <- dt0 %>% select(!c(`10`, `110`, `20`, `88`))
+```
+
+```{r}
+# Convert data from wide to long format
+m_dt <- reshape2::melt(dt0, id = "time")
+mtdt <- merge(m_dt, mt0, by = "variable")
+mtdt$environment <- paste(mtdt$media, mtdt$condition)
+well <- paste(mtdt$variable, mtdt$ID, sep = " ")
+mtdt <- cbind(well, mtdt)
+
+# time cutoff - this is a usefull function for graphing and analysis. You might not need to look at the full length of the experiment.
+t_mtdt <- mtdt[!(mtdt$time >= 80), ]
+
+unique(t_mtdt$condition)
+unique(t_mtdt$strain)
+```
+
+remove blank outliers and plot. external wells are more prone to evaporation and crystallization. 
+```{r}
+cond <- "25mM glucose"
+
+filter(t_mtdt, strain == "blank" & condition == cond) %>%
+  ggplot(., aes(x = time, y = value, color = well)) + # if you want to know the well number, change color = well
+  ggtitle(paste("Growthcurves in", expt)) +
+  xlab("time (h)") +
+  ylab("Absorbance at 600nm") +
+  geom_line() +
+  scale_color_viridis(discrete = TRUE) +
+  theme_classic() +
+  theme( # legend.position = 'none',
+    plot.title = element_text(face = "bold", color = "#000000", size = 12, angle = 0),
+    axis.title.x = element_text(face = "bold", color = "#000000", size = 10, angle = 0),
+    axis.title.y = element_text(face = "bold", color = "#000000", size = 10, angle = 90),
+    axis.text.y = element_text(face = "plain", color = "#000000", size = 10, angle = 0),
+    axis.text.x = element_text(face = "plain", color = "#000000", size = 10, angle = 0)
+  )
+
+filter(t_mtdt, strain == "DF60" & condition == cond) %>%
+  ggplot(., aes(x = time, y = value, color = well)) + # if you want to know the well number, change color = well
+  ggtitle(paste("Growthcurves in", expt)) +
+  xlab("time (h)") +
+  ylab("Absorbance at 600nm") +
+  geom_line() +
+  scale_color_viridis(discrete = TRUE) +
+  theme_classic() +
+  theme( # legend.position = 'none',
+    plot.title = element_text(face = "bold", color = "#000000", size = 12, angle = 0),
+    axis.title.x = element_text(face = "bold", color = "#000000", size = 10, angle = 0),
+    axis.title.y = element_text(face = "bold", color = "#000000", size = 10, angle = 90),
+    axis.text.y = element_text(face = "plain", color = "#000000", size = 10, angle = 0),
+    axis.text.x = element_text(face = "plain", color = "#000000", size = 10, angle = 0)
+  )
+
+filter(t_mtdt, strain == "AKS133" & condition == cond) %>%
+  ggplot(., aes(x = time, y = value, color = well)) + # if you want to know the well number, change color = well
+  ggtitle(paste("Growthcurves in", expt)) +
+  xlab("time (h)") +
+  ylab("Absorbance at 600nm") +
+  geom_line() +
+  scale_color_viridis(discrete = TRUE) +
+  theme_classic() +
+  theme( # legend.position = 'none',
+    plot.title = element_text(face = "bold", color = "#000000", size = 12, angle = 0),
+    axis.title.x = element_text(face = "bold", color = "#000000", size = 10, angle = 0),
+    axis.title.y = element_text(face = "bold", color = "#000000", size = 10, angle = 90),
+    axis.text.y = element_text(face = "plain", color = "#000000", size = 10, angle = 0),
+    axis.text.x = element_text(face = "plain", color = "#000000", size = 10, angle = 0)
+  )
+
+filter(t_mtdt, strain == "AKS319" & condition == cond) %>%
+  ggplot(., aes(x = time, y = value, color = well)) + # if you want to know the well number, change color = well
+  ggtitle(paste("Growthcurves in", expt)) +
+  xlab("time (h)") +
+  ylab("Absorbance at 600nm") +
+  geom_line() +
+  scale_color_viridis(discrete = TRUE) +
+  theme_classic() +
+  theme( # legend.position = 'none',
+    plot.title = element_text(face = "bold", color = "#000000", size = 12, angle = 0),
+    axis.title.x = element_text(face = "bold", color = "#000000", size = 10, angle = 0),
+    axis.title.y = element_text(face = "bold", color = "#000000", size = 10, angle = 90),
+    axis.text.y = element_text(face = "plain", color = "#000000", size = 10, angle = 0),
+    axis.text.x = element_text(face = "plain", color = "#000000", size = 10, angle = 0)
+  )
+```
+difference btwn ATCC33960 bioreps (a grows to higher stat than b in glucose, no carb)
+
+average blank wells
+```{r}
+filter(mt0, strain == "blank")$variable -> blanks
+rowMeans(dt0[colnames(dt0) %in% blanks]) -> blank
+dt <- cbind("blank" = blank, dt0[, !names(dt0) %in% blanks])
+
+# subtract average blank from each well
+d <- dt[-c(1, 2)] - dt$blank
+d$time <- dt$time # add time column back
+mins <- Rfast::colMins(as.matrix(d), value = T) # get column minimums
+d <- sweep(d, 2, mins, "-") # subtract smallest value for each column
+```
+
+Growth curve modeling
+```{r}
+# Create an output data frame to store the results in.
+num_analyses <- length(names(d)) - 1
+d_gc <- data.frame(
+  sample = character(num_analyses),
+  k = numeric(num_analyses),
+  n0 = numeric(num_analyses),
+  r = numeric(num_analyses),
+  t_mid = numeric(num_analyses),
+  t_gen = numeric(num_analyses),
+  auc_l = numeric(num_analyses),
+  auc_e = numeric(num_analyses),
+  sigma = numeric(num_analyses),
+  stringsAsFactors = FALSE
+)
+
+# Truncate or trim the input data to observations occurring in the first 80 hours.
+trim_at_time <- 80.5
+
+# Loop through all of the columns in the data frame. For each column, run Growthcurver.
+pdf(paste("figures/", expt, "_growthcurver_fits.pdf", sep = ""), height = 8.5, width = 11)
+par(mfcol = c(8, 12))
+par(mar = c(0.25, 0.25, 0.25, 0.25))
+y_lim_max <- max(d[, setdiff(names(d), "time")], na.rm = T) - min(d[, setdiff(names(d), "time")], na.rm = T)
+
+n <- 1 # keeps track of the current row in the output data frame
+for (col_name in names(d)) {
+  # Don't process the time column.
+  if (col_name != "time") {
+    # Create a temporary data frame that contains just the time and current col
+    d_loop <- d[c("time", col_name)]
+
+    # Now, call Growthcurver to calculate the metrics using SummarizeGrowth
+    gc_fit <- SummarizeGrowth(
+      data_t = d_loop$time,
+      data_n = d_loop[col_name],
+      t_trim = trim_at_time,
+      bg_correct = "none"
+    )
+
+    if (gc_fit$vals[[16]] == "cannot fit data") {
+      d_gc$sample[n] <- col_name
+      n <- n + 1
+    } else {
+      d_gc$sample[n] <- col_name
+      d_gc[n, 2:9] <- c(
+        gc_fit$vals$k,
+        gc_fit$vals$n0,
+        gc_fit$vals$r,
+        gc_fit$vals$t_mid,
+        gc_fit$vals$t_gen,
+        gc_fit$vals$auc_l,
+        gc_fit$vals$auc_e,
+        gc_fit$vals$sigma
+      )
+
+      n <- n + 1
+      # Finally, plot the raw data and the fitted curve. print some of the data points to keep the file size smaller
+      n_obs <- length(gc_fit$data$t)
+      idx_to_plot <- 1:20 / 20 * n_obs
+      plot(gc_fit$data$t[idx_to_plot], gc_fit$data$N[idx_to_plot],
+        pch = 20,
+        xlim = c(0, trim_at_time),
+        ylim = c(0, y_lim_max),
+        cex = 0.6, xaxt = "n", yaxt = "n"
+      )
+      text(x = trim_at_time / 4, y = y_lim_max, labels = col_name, pos = 1)
+      lines(gc_fit$data$t, predict(gc_fit$model), col = "red")
+    }
+  }
+}
+dev.off()
+```
+
+graph fitted curves:
+```{r, message=F}
+fitted_curves <- list()
+
+n <- 1 # keeps track of the current row in the output data frame
+for (col_name in names(d)) {
+  if (col_name != "time") {
+    d_loop <- d[c("time", col_name)]
+    gc_fit <- SummarizeGrowth(
+      data_t = d_loop$time,
+      data_n = d_loop[col_name],
+      t_trim = trim_at_time,
+      bg_correct = "none"
+    )
+    if (gc_fit$vals[[16]] == "cannot fit data") {
+      d_gc$sample[n] <- col_name
+      n <- n + 1
+    } else {
+      fitted_curves[[n]] <- predict(gc_fit$model)
+      names(fitted_curves)[n] <- col_name
+      n <- n + 1
+    }
+  }
+}
+
+tmp <- Filter(length, fitted_curves)
+fits <- as.data.frame(tmp, col.names = names(tmp))
+colnames(fits) <- names(tmp)
+fits <- cbind("time" = d$time[d$time < trim_at_time], fits)
+
+# re-zero lowest value
+mins <- Rfast::colMins(as.matrix(fits), value = T) # get column minimums
+fits <- sweep(fits, 2, mins, "-") # subtract smallest value for each column
+```
+
+```{r, fig.width=10, fig.height=4}
+# Convert data from wide to long format
+m_dt <- reshape2::melt(fits, id = "time")
+mtdt <- merge(m_dt, mt0, by = "variable")
+well <- paste(mtdt$variable, mtdt$ID, sep = " ")
+mtdt <- cbind(well, mtdt)
+
+t_mtdt2 <- mtdt[!(mtdt$ID == ""), ]
+
+stats2 <- t_mtdt2 %>%
+  group_by(ID, strain, condition, time) %>%
+  summarise(
+    reps = length(value),
+    average = mean(value),
+    CI95 = conf_int95(value)
+  )
+unique(stats2$strain)
+
+stats2$average <- stats2$average + 1
+
+# all conditions tested.
+stats2 %>%
+  ggplot(., aes(x = time, y = log10(average), color = strain)) +
+  xlab("time (h)") +
+  ylab("log10(Optical Denisty)") +
+  geom_line(size = 1) +
+  scale_x_continuous(limits = c(0, 72)) +
+  geom_ribbon(aes(ymin = log10(average - CI95), ymax = log10(average + CI95), fill = strain, color = NULL), alpha = 0.2) +
+  scale_fill_viridis("strain", discrete = TRUE, begin = 0.1, end = 0.9) +
+  scale_color_viridis("strain", discrete = TRUE, begin = 0.1, end = 0.9) +
+  theme_bw() +
+  facet_wrap(~condition) +
+  theme(
+    axis.title.x = element_text(face = "bold", size = 10, angle = 0), axis.title.y = element_text(face = "bold", size = 10, angle = 90),
+    axis.text.y = element_text(size = 8, angle = 0), axis.text.x = element_text(size = 8, angle = 0),
+    axis.ticks.length.y.left = unit(.05, "cm"), strip.text = element_text(size = 10),
+    strip.background = element_blank(), strip.placement = "outside"
+  ) -> fitted.data
+plot(fitted.data)
+
+stats3 <- t_mtdt2 %>%
+  group_by(ID, strain, condition, time, expt) %>%
+  summarise(
+    reps = length(value),
+    average = mean(value) + 1,
+    CI95 = conf_int95(value)
+  )
+
+stats3 %>%
+  filter(condition == "no carb" | condition == "25mM glucose") %>%
+  filter(strain != "AKS318" & strain != "ATCC33960") %>%
+  ggplot(., aes(x = time, y = log10(average), color = strain)) +
+  xlab("time (h)") +
+  ylab("log10(Optical Denisty)") +
+  geom_line(size = 1) +
+  scale_x_continuous(limits = c(0, 80)) +
+  geom_ribbon(aes(ymin = log10(average - CI95), ymax = log10(average + CI95), fill = strain, color = NULL), alpha = 0.2) +
+  scale_fill_viridis("strain", discrete = TRUE, begin = 0.1, end = 0.9) +
+  scale_color_viridis("strain", discrete = TRUE, begin = 0.1, end = 0.9) +
+  theme_bw() +
+  facet_wrap(~condition) +
+  theme(
+    axis.title.x = element_text(face = "bold", size = 12),
+    axis.title.y = element_text(face = "bold", size = 12, angle = 90),
+    axis.text.y = element_text(size = 10),
+    axis.text.x = element_text(size = 10),
+    legend.position = "none",
+    axis.ticks.length.y.left = unit(.05, "cm"),
+    strip.text = element_text(size = 12),
+    strip.background = element_blank(),
+    strip.placement = "outside"
+  ) -> fitted.data
+plot(fitted.data)
+
+pdf(paste("figures/", expt, "_fitcurves.pdf", sep = ""), height = 3, width = 4, bg = "transparent")
+plot(fitted.data)
+dev.off()
+```
+
+#TrmB normalized to WT (by condition)
+normalize trmB to WT. take average of WT bioreps. calculate ratios of individual trmB bioreps. then average and calc SD/std err
+```{r}
+colnames(d_gc)[1] <- "variable"
+d_gc[d_gc == 0] <- NA
+d_gc <- d_gc[complete.cases(d_gc), ]
+(merge(d_gc, mt0) -> tmp)
+
+# t-test considering technical replicates distinct.
+tmp %>%
+  filter(condition != "25mM glycerol") %>%
+  filter(strain != "AKS318" & strain != "ATCC33960") -> tmp2
+
+vals <- tmp2 %>%
+  group_by(condition) %>%
+  t_test(auc_e ~ strain, comparisons = list(c("DF60", "AKS319"), c("DF60", "AKS133"), c("AKS319", "AKS133")), p.adjust.method = "fdr") %>%
+  add_y_position(fun = "mean_sd")
+
+ggboxplot(tmp2,
+  x = "strain", y = "auc_e",
+  fill = "strain", add = "jitter",
+  facet.by = "condition", size = 0.8, ylab = "AUC"
+) +
+  stat_pvalue_manual(vals, label = "p.adj.signif", tip.length = 0.01) +
+  scale_fill_viridis("x", discrete = TRUE, begin = 0.1, end = 0.9, alpha = 0.8) +
+  ylim(0, 13) +
+  theme_bw() +
+  theme(
+    axis.title.y = element_text(face = "bold", size = 12, angle = 90),
+    axis.text.y = element_text(size = 10, angle = 0),
+    axis.text.x = element_text(size = 10, angle = 0),
+    axis.title.x = element_text(face = "bold", size = 12),
+    axis.ticks.length.y.left = unit(.05, "cm"),
+    strip.text = element_text(size = 12),
+    strip.background = element_blank(),
+    strip.placement = "outside",
+    legend.position = "none"
+  ) -> auc
+plot(auc)
+
+pdf(paste("figures/", expt, "_auc.pdf", sep = ""), height = 3, width = 4, bg = "transparent")
+plot(auc)
+dev.off()
+```
