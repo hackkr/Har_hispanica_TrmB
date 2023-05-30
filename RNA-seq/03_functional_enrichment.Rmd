@@ -1,0 +1,98 @@
+ ---
+title: "Functional enrichment DEGs"
+author: "Rylee K. Hackley"
+output: 
+  html_document:
+    keep_md: true
+---
+
+```{r, message=FALSE, warning=FALSE, echo=FALSE}
+#BiocManager::install(c("GenomicRanges","rtracklayer", "IRanges"))
+
+library(tidyverse)
+library(ggpubr)
+library(GenomicRanges)
+library(GenomicFeatures)
+library(rtracklayer)
+library(viridis)
+```
+
+```{r setup, message=FALSE, warning=FALSE}
+# Note: can also do cogtest by different ID, just replace "cogfile$locus_tag" argument with other type of identifier, e.g. "cogfile$acc")
+# Calculate statistical information about the cogs represented in the list of genes using the function below.
+# Cogtest: three inputs to this function:
+# 1) list of gene names from the cluster (namelist)
+# 2) COG file
+# 3) p-value cutoff
+# 4) method for multiple testing correction
+
+cogtest <- function(namelist, cogfile, pvalue, method = "fdr", cutoff = 5) {
+  cogs <- subset(cogfile, is.element(cogfile$locus_tag, unique(namelist$locus_tag)) == TRUE)
+  clust <- table(cogs$COG_category) %>%
+    subset(. > cutoff ) #apply cutoff
+  res <- data.frame(matrix(0, length(clust), 4)) # create 0 matrix
+  rownames(res) <- names(clust)
+  colnames(res) <- c("probability", "expect", "count", "p_adjust")
+  all <- table(cogfile$COG_category)
+  for (i in 1:length(clust)) { # calc expected frequencies and pval by hypergeo and append to DF
+    all2 <- all[names(all) == names(clust[i])][[1]]
+    res[i, 1] <- phyper(clust[[i]], all2, sum(all) - all2, nrow(cogs), lower.tail = F)
+    res[i, 2] <- all2 * (nrow(cogs) / nrow(cogfile))
+    res[i, 3] <- clust[[i]]
+  }
+  # multiple testing correction:
+  res$p_adjust <- p.adjust(res$probability, method = method)
+  fin <- subset(res, p_adjust <= pvalue)
+  fin <- rownames_to_column(fin, var = "COG")
+  return(fin)
+}
+
+# Note: the COGcategory name must be entered in quotes and add a space to the end of the category name of interest, e.g. 'transport '
+## Use the following function to look at the genes in your cluster associated with a particular COG
+cogset <- function(namelist, cogfile, COGcategory) {
+  subset(cogfile, is.element(cogfile$locus_tag, namelist$locus_tag) & is.element(cogfile$COG_category, COGcategory) == TRUE)
+}
+```
+
+```{r, message=F, warning=FALSE}
+#load DEGs
+trmB <- read_csv("01_deseq2_output/group_final.csv")
+
+#load in genome info, for annotating. 
+gff <- GenomicFeatures::makeTxDbFromGFF("../00_genome_files/genomic.gff", format = "gff")
+gff_df <- read_csv("../00_genome_files/GCF_000223905.1_gff.key.csv")
+
+#load arcogs, from EggNOG
+hca_cogs <- read_csv("../00_genome_files/HCA_eggNOG_mapper.csv")[c(1,6:8)]
+colnames(hca_cogs)[1] <- "old_locus_tag"
+tmp <- inner_join(gff_df, hca_cogs)
+colnames(hca_cogs)[1] <- "locus_tag"
+tmp2 <- inner_join(gff_df, hca_cogs)
+hca_cogs <- rbind(tmp, tmp2) %>% arrange(locus_tag)
+
+#motifs
+motif <- read_csv("../ChIP-seq/04d_motif_annotation/motifs_annotated.csv")
+pro.motif <- motif %>% filter(type == "promoter")
+```
+
+DEG lists for fxnal enrichment:
+```{r, collapse=TRUE}
+# induced
+cogtest(filter(trmB, log2FoldChange.pyr <= -1), hca_cogs, 0.05) 
+
+# down regulated
+cogtest(filter(trmB, log2FoldChange.pyr >= 1), hca_cogs, 1, cutoff = 0) 
+```
+
+interrogating DEGs
+```{r, collapse=TRUE}
+cogset(trmB, hca_cogs, "G")
+cogset(trmB, hca_cogs, "E")
+cogset(trmB, hca_cogs, "P")
+```
+
+Do any of these DEGs have motifs?
+```{r, collapse=TRUE}
+trmB[trmB$locus_tag %in% motif$locus_tag,] #10 have motifs
+motif[motif$locus_tag %in% trmB$locus_tag,] # HAH_5130, HAH_2805 has 2 motifs
+```

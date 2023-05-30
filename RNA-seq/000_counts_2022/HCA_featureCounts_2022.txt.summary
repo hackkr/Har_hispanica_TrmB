@@ -1,0 +1,15 @@
+Status	03_aligned_sorted/10_WT_B_S18_sorted.bam	03_aligned_sorted/11_WT_C_S19_sorted.bam	03_aligned_sorted/12_WT_D_S20_sorted.bam	03_aligned_sorted/13_TRMB_A_S21_sorted.bam	03_aligned_sorted/14_TRMB_B_S22_sorted.bam	03_aligned_sorted/15_TRMB_C_S23_sorted.bam	03_aligned_sorted/16_TRMB_D_S24_sorted.bam	03_aligned_sorted/17_WT_ref_S25_sorted.bam	03_aligned_sorted/1_WT_A_S9_sorted.bam	03_aligned_sorted/2_WT_B_S10_sorted.bam	03_aligned_sorted/3_WT_C_S11_sorted.bam	03_aligned_sorted/4_WT_D_S12_sorted.bam	03_aligned_sorted/5_TRMB_A_S13_sorted.bam	03_aligned_sorted/6_TRMB_B_S14_sorted.bam	03_aligned_sorted/7_TRMB_C_S15_sorted.bam	03_aligned_sorted/8_TRMB_D_S16_sorted.bam	03_aligned_sorted/9_WT_A_S17_sorted.bam
+Assigned	17996178	23748234	12719797	16357575	15866610	15910207	18375973	22686381	26374459	21963359	15335358	15124653	22283051	20630325	22094331	22136094	21141722
+Unassigned_Unmapped	487340	366034	198732	199777	298366	535747	197003	416581	259262	221583	292644	227889	303233	234272	262510	429043	333106
+Unassigned_Read_Type	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Unassigned_Singleton	436828	520156	292709	419576	404433	421468	429491	544194	540416	413285	340828	393571	508342	491951	497903	441951	443694
+Unassigned_MappingQuality	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Unassigned_Chimera	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Unassigned_FragmentLength	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Unassigned_Duplicate	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Unassigned_MultiMapping	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Unassigned_Secondary	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Unassigned_NonSplit	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Unassigned_NoFeatures	1168401	1392209	868121	641990	676772	488230	663580	1306273	1490777	1177194	891763	866866	1011034	854495	1179779	1193226	1180994
+Unassigned_Overlapping_Length	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Unassigned_Ambiguity	3787571	4446801	3103166	6592143	6784262	7813915	7108457	2039025	3616911	2763918	1913634	2351861	3300122	2611203	2756445	2300349	4692748

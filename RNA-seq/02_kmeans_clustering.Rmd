@@ -1,0 +1,130 @@
+---
+title: "Expression clustering"
+author: "Rylee K. Hackley"
+output: 
+  html_document:
+    keep_md: true
+---
+
+```{r setup, echo=FALSE, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(viridis)
+library(pheatmap)
+library(factoextra)
+library(reshape2)
+library(BBmisc)
+
+save_pheatmap_pdf <- function(x, filename, width=6, height=6) {
+   stopifnot(!missing(x))
+   stopifnot(!missing(filename))
+   pdf(filename, width=width, height=height)
+   grid::grid.newpage()
+   grid::grid.draw(x$gtable)
+   dev.off()
+}
+```
+
+Load and parse files
+```{r, warning=FALSE, message=FALSE}
+expression_all <- read_csv("01_deseq2_output/normalised_counts_all.csv")
+genelist <- expression_all[[1]]
+final <- read_csv("01_deseq2_output/group_final.csv")
+
+# peaks
+peaks <- read_csv("../ChIP-seq/04a_peak_annotation/04a_consensus_genelist.csv")
+```
+
+# Noramlized counts using all samples
+```{r normalisation, warning=FALSE, message=TRUE}
+l <- length(genelist)
+
+allexpr <- as.data.frame(matrix(nrow = l, ncol = 4))
+for (i in (1:l)) {
+  # Find the gene in the normalized count file
+  j <- which(expression_all$rowname == genelist[i])
+  expr <- as.numeric(vector(length = 4))
+
+  # Get avg expression for this gene from bioreps of 4 conditions
+  # mean/SD normalization of each gene for visualization.
+
+  expr[1] <- mean(as.numeric(expression_all[j, c(5:8, 20:21)])) # trmB_noglu
+  expr[2] <- mean(as.numeric(expression_all[j, c(13:16, 26:29)])) # trmB_glu
+  expr[3] <- mean(as.numeric(expression_all[j, c(2:4, 17:19, 30)])) # WT_noglu
+  expr[4] <- mean(as.numeric(expression_all[j, c(9:12, 22:25)])) # WT_glu
+
+  normexpr <- BBmisc::normalize(expr, method="standardize")
+  allexpr[i, ] <- normexpr
+}
+
+#allexpr <- BBmisc::normalize(allexpr, method="range", range = c(-1,1))
+rownames(allexpr) <- genelist
+colnames(allexpr) <- c("trmB:mGlu", "trmB:pGlu", "WT:mGlu", "WT:pGlu")
+```
+
+## cluster genes sig in both analyses
+```{r cluster, fig.height=6, fig.width=6}
+allsig <- allexpr[rownames(allexpr) %in% final$locus_tag, ]
+fviz_nbclust(allsig, kmeans, method = "silhouette")
+
+# Plot heatmap
+nclust <- 2
+clustexpr <- kmeans(allsig, nclust)
+clustexpr2 <- cbind(allsig, "cluster" = clustexpr$cluster)
+clustexpr2$locus_tag <- rownames(allsig)
+o <- order(clustexpr$cluster)
+clustexpr2 <- clustexpr2[o, ]
+pheatmap(clustexpr2[, 1:4],
+  cluster_cols = FALSE, cluster_rows = FALSE,
+  color = viridis(12, option = "C"), border_color = "black",
+  show_rownames = T, fontsize = 14, angle_col = 45) -> maps
+
+save_pheatmap_pdf(maps, "../figures/4C.pdf", width = 9, height = 12)
+
+panels <- c("D", "E")
+
+# Line plots for each cluster.
+for (i in (1:nclust)) {
+  clustexpr3 <- clustexpr2[clustexpr2$cluster == i, ]
+  clustexpr3 <- clustexpr3[, -5]
+  clustexpr3$locus_tag <- rownames(clustexpr3)
+  clustexpr3 <- melt(clustexpr3, id.vars = "locus_tag")
+  clustexpr3$Conditionasnumeric <- as.numeric(clustexpr3$variable)
+  k <- nrow(clustexpr3) / 4
+  
+  print(ggplot(clustexpr3, aes(x = fct_inorder(variable), y = value)) +
+    geom_line(aes(group = locus_tag), alpha = 0.2, size = 1, color = "grey40") +
+    geom_boxplot(aes(fill = variable), outlier.shape = NA, size = 1) +
+    geom_point(size = 2) + labs(y = "normalized counts") +
+    labs(y = "normalized counts", title = paste("cluster:", i, "genes:", k)) +
+    lims(y = c(-1.5, 1.5)) +
+    scale_fill_viridis(discrete = T) + theme_bw() +
+    theme(
+      axis.title.x = element_blank(), legend.title = element_blank(),
+      axis.title.y = element_text(size = 14), legend.text = element_text(size = 14),
+      axis.text.x = element_text(size = 14, angle = 45, hjust = 1), legend.position = "none"
+    ))
+  
+  pdf(file = paste("../figures/4", panels[i],".pdf", sep = ""), width = 6, height = 6)
+    print(ggplot(clustexpr3, aes(x = fct_inorder(variable), y = value)) +
+    geom_line(aes(group = locus_tag), alpha = 0.2, size = 1, color = "grey40") +
+    geom_boxplot(aes(fill = variable), outlier.shape = NA, size = 1) +
+    geom_point(size = 2) + labs(y = "normalized counts") +
+    labs(y = "normalized counts", title = paste("cluster:", i, "genes:", k)) +
+    lims(y = c(-1.5, 1.5)) +
+    scale_fill_viridis(discrete = T) + theme_bw() +
+    theme(
+      axis.title.x = element_blank(), legend.title = element_blank(),
+      axis.title.y = element_text(size = 14), legend.text = element_text(size = 14),
+      axis.text.x = element_text(size = 14, angle = 45, hjust = 1), legend.position = "none"
+    ))
+  dev.off()
+}
+```
+```{r, warning=FALSE, message=FALSE}
+tmp <- left_join(clustexpr2, final, by = "locus_tag")
+write_csv(tmp, "02_clustering_output/02_clustered_counts_final.csv")
+
+# do any of these have motifs nearby?
+motifs <- read_csv("../ChIP-seq/04d_motif_annotation/motifs_annotated.csv")
+tmp[tmp$locus_tag %in% motifs$locus_tag, ]
+```

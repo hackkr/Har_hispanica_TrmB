@@ -1,0 +1,18 @@
+sample,genotype,glucose,time,batch,SE_PE,counted with,  sum_counts  ,percent_aligned
+10_WT_B_S18,WT,mGlu,24hr,RH_SP_2022,PE,featureCounts,"17,996,178",75.4
+11_WT_C_S19,WT,mGlu,24hr,RH_SP_2022,PE,featureCounts,"23,748,234",77.9
+12_WT_D_S20,WT,mGlu,24hr,RH_SP_2022,PE,featureCounts,"12,719,797",74
+13_TRMB_A_S21,trmB,mGlu,24hr,RH_SP_2022,PE,featureCounts,"16,357,575",67.6
+14_TRMB_B_S22,trmB,mGlu,24hr,RH_SP_2022,PE,featureCounts,"15,866,610",66
+15_TRMB_C_S23,trmB,mGlu,24hr,RH_SP_2022,PE,featureCounts,"15,910,207",63.2
+16_TRMB_D_S24,trmB,mGlu,24hr,RH_SP_2022,PE,featureCounts,"18,375,973",68.6
+17_WT_ref_S25,ref,YPC23,stat,RH_SP_2022,PE,featureCounts,"22,686,381",84
+1_WT_A_S9,WT,pGlu,24hr,RH_SP_2022,PE,featureCounts,"26,374,459",81.7
+2_WT_B_S10,WT,pGlu,24hr,RH_SP_2022,PE,featureCounts,"21,963,359",82.8
+3_WT_C_S11,WT,pGlu,24hr,RH_SP_2022,PE,featureCounts,"15,335,358",81.7
+4_WT_D_S12,WT,pGlu,24hr,RH_SP_2022,PE,featureCounts,"15,124,653",81.3
+5_TRMB_A_S13,trmB,pGlu,24hr,RH_SP_2022,PE,featureCounts,"22,283,051",81.3
+6_TRMB_B_S14,trmB,pGlu,24hr,RH_SP_2022,PE,featureCounts,"20,630,325",83.1
+7_TRMB_C_S15,trmB,pGlu,24hr,RH_SP_2022,PE,featureCounts,"22,094,331",82.5
+8_TRMB_D_S16,trmB,pGlu,24hr,RH_SP_2022,PE,featureCounts,"22,136,094",83.5
+9_WT_A_S17,WT,mGlu,24hr,RH_SP_2022,PE,featureCounts,"21,141,722",76.1
