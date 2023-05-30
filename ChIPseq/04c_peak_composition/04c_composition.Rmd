@@ -1,0 +1,113 @@
+---
+title: "make consensus peak profile files"
+author: Rylee K. Hackley
+output: 
+  html_document:
+    keep_md: true
+---
+
+```{r, message=FALSE}
+# BiocManager::install(c("GenomicRanges","rtracklayer", "ChIPseeker", "IRanges"))
+
+library(tidyverse)
+library(openxlsx)
+library(GenomicFeatures)
+library(rtracklayer)
+```
+
+Load files
+```{r, message=FALSE}
+gff <- makeTxDbFromGFF("../../00_genome_files/genomic.gff",
+  format = "gff",
+  dataSource = "NCBI", organism = "Haloarcula hispanica"
+)
+gff_df <- read_csv("../../00_genome_files/genomic.gff")
+
+consensus <- read_csv("../03_peak_visualize/03_consensus_peaks.csv")
+consensus_gr <- makeGRangesFromDataFrame(consensus, keep.extra.columns = T)
+
+motif <- read_tsv("../04b_motif_discovery/1st_order_15peaks_19_whole_genome_FIMO.tsv") %>%
+  head(-3) %>%
+  makeGRangesFromDataFrame(seqnames.field = "sequence_name") %>%
+  reduce(ignore.strand = T)
+```
+
+Get GRanges of genes and promoters and intergenic regions
+```{r}
+genes.only <- genes(gff, columns = c("GENEID"))
+
+# get promoter regions
+pro250 <- promoters(genes.only, upstream = 250, downstream = 0) ## Warning: this encroaches on nearby CDS
+pro250$type <- rep("promoter", length(pro250))
+
+# merge end of chr info with genes
+genes.only$type <- rep("gene", length(genes.only))
+
+# non coding regions of the genome
+IG <- gaps(GenomicRanges::reduce(genes.only, ignore.strand = T))
+
+# overlap promoter region and IG regions to get conservative promoter ranges (that respect genic regions)
+findOverlaps(pro250, IG, ignore.strand = T) -> pros
+pintersect(pro250[queryHits(pros)], IG[subjectHits(pros)]) -> trimmed.pro
+trimmed.pro <- trimmed.pro[, 1:2]
+names(trimmed.pro) <- NULL
+
+# regenerate IG ranges to respect promoter regions
+ig.only <- gaps(GenomicRanges::reduce(c(genes.only, trimmed.pro), ignore.strand = T))
+```
+
+create peak profile
+```{r}
+GenomicRanges::findOverlaps(genes.only, consensus_gr, minoverlap = 1) -> genes
+pintersect(consensus_gr[subjectHits(genes)], genes.only[queryHits(genes)]) -> g.peaks
+g.peaks$hit <- rep("genic", length(g.peaks))
+g.peaks$name <- genes.only[queryHits(genes)]$GENEID
+
+GenomicRanges::findOverlaps(motif, consensus_gr, minoverlap = 1) -> mot
+pintersect(consensus_gr[subjectHits(mot)], motif[queryHits(mot)]) -> m.peaks
+m.peaks$hit <- rep("motif", length(m.peaks))
+m.peaks$name <- rep("motif", length(m.peaks))
+
+GenomicRanges::findOverlaps(trimmed.pro, consensus_gr, ignore.strand = T, minoverlap = 1) -> promoters
+pintersect(consensus_gr[subjectHits(promoters)], trimmed.pro[queryHits(promoters)]) -> p.peaks
+GenomicRanges::reduce(p.peaks, with.revmap = T, ignore.strand = T) -> p.peaks2
+p.peaks2$average_RPKM_minus <- p.peaks$average_RPKM_minus[sapply(p.peaks2$revmap, "[", 1)]
+p.peaks2$hit <- rep("promoter", length(p.peaks2))
+p.peaks2$name <- rep("promoter", length(p.peaks2))
+p.peaks <- p.peaks2[, -1]
+
+GenomicRanges::findOverlaps(ig.only, consensus_gr, ignore.strand = T, minoverlap = 1) -> intergeneic
+pintersect(consensus_gr[subjectHits(intergeneic)], ig.only[queryHits(intergeneic)]) -> ig.peaks
+ig.peaks$hit <- rep("intergenic", length(ig.peaks))
+ig.peaks$name <- rep("intergenic", length(ig.peaks))
+
+all <- sort(c(g.peaks, p.peaks, ig.peaks, m.peaks), ignore.strand = T)
+all <- split(all, all$average_RPKM_minus)
+```
+
+```{r}
+# check that each peak exactly the expected width
+peak.width <- vector()
+for (i in 1:length(all)) {
+  tmp <- sum(width(all[[i]]))
+  peak.width <- append(peak.width, tmp)
+}
+peak.width
+```
+
+data wrangle gRangesList to wide df
+```{r}
+as.data.frame(all)[, -c(1:2)] %>%
+  pivot_wider(., id_cols = "average_RPKM_minus", names_from = "hit", values_from = "width") -> peaks.final
+
+peaks.final$genic <- sapply(peaks.final$genic, sum)
+peaks.final$promoter <- sapply(peaks.final$promoter, sum)
+peaks.final$intergenic <- sapply(peaks.final$intergenic, sum)
+peaks.final$motif <- sapply(peaks.final$motif, sum)
+
+all.df <- as.data.frame(all)[, -c(1:2)]
+names(all.df$name) <- NULL
+all.df$name <- unlist(all.df$name)
+
+write_csv(all.df, "04c_ordered_peak_composition_consensus.csv")
+```
