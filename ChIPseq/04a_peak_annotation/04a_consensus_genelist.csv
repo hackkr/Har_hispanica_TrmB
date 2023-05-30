@@ -1,0 +1,49 @@
+seqnames,peak_start,peak_end,width,strand,peak_ID_trackviewer,group_name,LFC,average_RPKM_minus,motif,overlap_feature,overlap_length,locus_tag,old_locus_tag,feature_start,feature_end,annotation
+NC_015948.1,1358449,1358749,301,-,9,trmB_DiffBind/shared,-6.94,44296,y,promoter,250,HAH_RS06895,HAH_1418,1357602,1358459,3-hydroxyacyl-CoA dehydrogenase NAD-binding domain-containing protein
+NC_015948.1,1358449,1358749,301,+,9,trmB_DiffBind/shared,-6.94,44296,y,promoter,250,HAH_RS06900,HAH_1419,1358729,1359604,class 1 fructose-bisphosphatase
+NC_015948.1,1358449,1358749,301,-,9,trmB_DiffBind/shared,-6.94,44296,y,gene,11,HAH_RS06895,HAH_1418,1357602,1358459,3-hydroxyacyl-CoA dehydrogenase NAD-binding domain-containing protein
+NC_015948.1,1358449,1358749,301,+,9,trmB_DiffBind/shared,-6.94,44296,y,gene,21,HAH_RS06900,HAH_1419,1358729,1359604,class 1 fructose-bisphosphatase
+NC_015944.1,133666,133966,301,-,2,trmB_DiffBind/shared,-5.96,24740,y,promoter,114,HAH_RS17930,HAH_5129,132400,133779,sugar porter family MFS transporter
+NC_015944.1,133666,133966,301,-,2,trmB_DiffBind/shared,-5.96,24740,y,gene,114,HAH_RS17930,HAH_5129,132400,133779,sugar porter family MFS transporter
+NC_015944.1,133666,133966,301,-,2,trmB_DiffBind/shared,-5.96,24740,y,gene,73,HAH_RS17935,HAH_5130,133894,134373,universal stress protein
+NC_015948.1,168781,169081,301,-,4,trmB_DiffBind/shared,-6.66,24038,y,promoter,74,HAH_RS19805,HAH_0188,168742,168879,hypothetical protein
+NC_015948.1,168781,169081,301,-,4,trmB_DiffBind/shared,-6.66,24038,y,gene,128,HAH_RS00900,HAH_0189,168954,169139,hypothetical protein
+NC_015948.1,168781,169081,301,-,4,trmB_DiffBind/shared,-6.66,24038,y,gene,99,HAH_RS19805,HAH_0188,168742,168879,hypothetical protein
+NC_015948.1,2563447,2563747,301,*,24,no_glu_unique,NA,15060,y,intergenic,301,NA,NA,NA,NA,NA
+NC_015948.1,1211383,1211683,301,-,6,trmB_DiffBind/shared,-4.69,10328,y,promoter,97,HAH_RS06155,HAH_1264,1211035,1211487,universal stress protein
+NC_015948.1,1211383,1211683,301,-,6,trmB_DiffBind/shared,-4.69,10328,y,gene,105,HAH_RS06155,HAH_1264,1211035,1211487,universal stress protein
+NC_015948.1,1211383,1211683,301,-,6,trmB_DiffBind/shared,-4.69,10328,y,gene,99,HAH_RS06160,HAH_1265,1211585,1214281,phosphoenolpyruvate carboxylase
+NC_015948.1,1315389,1315689,301,-,8,trmB_DiffBind/shared,-4.46,9538,y,promoter,205,HAH_RS06645,HAH_1365,1314759,1315394,FAD-dependent oxidoreductase
+NC_015948.1,1315389,1315689,301,+,8,trmB_DiffBind/shared,-4.46,9538,y,promoter,205,HAH_RS06650,HAH_1366,1315600,1317360,2-oxoacid:acceptor oxidoreductase subunit alpha
+NC_015948.1,1315389,1315689,301,-,8,trmB_DiffBind/shared,-4.46,9538,y,gene,6,HAH_RS06645,HAH_1365,1314759,1315394,FAD-dependent oxidoreductase
+NC_015948.1,1315389,1315689,301,+,8,trmB_DiffBind/shared,-4.46,9538,y,gene,90,HAH_RS06650,HAH_1366,1315600,1317360,2-oxoacid:acceptor oxidoreductase subunit alpha
+NC_015948.1,2237448,2237748,301,+,22,no_glu_unique,NA,8374,y,promoter,121,HAH_RS11270,HAH_2323,2237674,2239983,phosphoenolpyruvate synthase
+NC_015948.1,2237448,2237748,301,+,22,no_glu_unique,NA,8374,y,gene,105,HAH_RS11265,HAH_2322,2236641,2237552,PhzF family phenazine biosynthesis protein
+NC_015948.1,2237448,2237748,301,+,22,no_glu_unique,NA,8374,y,gene,75,HAH_RS11270,HAH_2323,2237674,2239983,phosphoenolpyruvate synthase
+NC_015948.1,832252,832552,301,+,16,no_glu_unique,NA,7922,y,promoter,217,HAH_RS04315,HAH_0887,832469,833395,cysteine synthase A
+NC_015948.1,832252,832552,301,+,16,no_glu_unique,NA,7922,y,gene,84,HAH_RS04315,HAH_0887,832469,833395,cysteine synthase A
+NC_015948.1,2635396,2635696,301,-,15,trmB_DiffBind/shared,-5.22,7715,y,promoter,191,HAH_RS13280,HAH_2729,2634450,2635403,aminopeptidase
+NC_015948.1,2635396,2635696,301,+,15,trmB_DiffBind/shared,-5.22,7715,y,promoter,191,HAH_RS13285,HAH_2730,2635595,2636659,type II glyceraldehyde-3-phosphate dehydrogenase
+NC_015948.1,2635396,2635696,301,-,15,trmB_DiffBind/shared,-5.22,7715,y,gene,8,HAH_RS13280,HAH_2729,2634450,2635403,aminopeptidase
+NC_015948.1,2635396,2635696,301,+,15,trmB_DiffBind/shared,-5.22,7715,y,gene,102,HAH_RS13285,HAH_2730,2635595,2636659,type II glyceraldehyde-3-phosphate dehydrogenase
+NC_015948.1,2701036,2701336,301,+,16,trmB_DiffBind/shared,-4.65,5642,y,promoter,128,HAH_RS13650,HAH_2806,2701283,2701861,riboflavin synthase
+NC_015948.1,2701036,2701336,301,-,16,trmB_DiffBind/shared,-4.65,5642,y,promoter,128,HAH_RS20000,HAH_2805,2701008,2701154,hypothetical protein
+NC_015948.1,2701036,2701336,301,+,16,trmB_DiffBind/shared,-4.65,5642,y,gene,54,HAH_RS13650,HAH_2806,2701283,2701861,riboflavin synthase
+NC_015948.1,2701036,2701336,301,-,16,trmB_DiffBind/shared,-4.65,5642,y,gene,119,HAH_RS20000,HAH_2805,2701008,2701154,hypothetical protein
+NC_015948.1,2921013,2921313,301,+,26,no_glu_unique,NA,2639,y,promoter,119,HAH_RS14795,HAH_3040,2921177,2922535,substrate-binding protein
+NC_015948.1,2921013,2921313,301,+,26,no_glu_unique,NA,2639,y,gene,45,HAH_RS14790,HAH_3039,2920599,2921057,Lrp/AsnC family transcriptional regulator
+NC_015948.1,2921013,2921313,301,+,26,no_glu_unique,NA,2639,y,gene,137,HAH_RS14795,HAH_3040,2921177,2922535,substrate-binding protein
+NC_015943.1,325159,325459,301,-,7,no_glu_unique,NA,2168,y,promoter,104,HAH_RS16670,HAH_4332,323954,325012,glucose 1-dehydrogenase
+NC_015943.1,325159,325459,301,*,7,no_glu_unique,NA,2168,y,intergenic,197,NA,NA,NA,NA,NA
+NC_015948.1,959806,960106,301,-,17,no_glu_unique,NA,2048,y,promoter,102,HAH_RS04915,HAH_1011,959492,959872,CBS domain-containing protein
+NC_015948.1,959806,960106,301,+,17,no_glu_unique,NA,2048,y,promoter,102,HAH_RS04920,HAH_1012,959975,961084,Gfo/Idh/MocA family oxidoreductase
+NC_015948.1,959806,960106,301,-,17,no_glu_unique,NA,2048,y,gene,67,HAH_RS04915,HAH_1011,959492,959872,CBS domain-containing protein
+NC_015948.1,959806,960106,301,+,17,no_glu_unique,NA,2048,y,gene,132,HAH_RS04920,HAH_1012,959975,961084,Gfo/Idh/MocA family oxidoreductase
+NC_015944.1,134268,134568,301,-,1,shared,NA,918,y,promoter,158,HAH_RS17935,HAH_5130,133894,134373,universal stress protein
+NC_015944.1,134268,134568,301,-,1,shared,NA,918,y,gene,106,HAH_RS17935,HAH_5130,133894,134373,universal stress protein
+NC_015944.1,134268,134568,301,-,1,shared,NA,918,y,gene,37,HAH_RS17940,HAH_5131,134532,135731,ABC transporter substrate-binding protein
+NC_015944.1,41488,41788,301,+,8,no_glu_unique,NA,546,y,promoter,94,HAH_RS17470,HAH_5034,41728,43023,Glu/Leu/Phe/Val dehydrogenase
+NC_015944.1,41488,41788,301,+,8,no_glu_unique,NA,546,y,promoter,2,HAH_RS17470,HAH_5034,41728,43023,Glu/Leu/Phe/Val dehydrogenase
+NC_015944.1,41488,41788,301,+,8,no_glu_unique,NA,546,y,promoter,94,HAH_RS19660,HAH_5033,41582,41725,rubrerythrin-like domain-containing protein
+NC_015944.1,41488,41788,301,+,8,no_glu_unique,NA,546,y,gene,61,HAH_RS17470,HAH_5034,41728,43023,Glu/Leu/Phe/Val dehydrogenase
+NC_015944.1,41488,41788,301,+,8,no_glu_unique,NA,546,y,gene,144,HAH_RS19660,HAH_5033,41582,41725,rubrerythrin-like domain-containing protein
