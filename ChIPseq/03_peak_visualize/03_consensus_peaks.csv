@@ -1,0 +1,16 @@
+peak_ID_trackviewer,group_name,analysis,seqnames,start,end,width,LFC, average_RPKM_minus ,motif
+24,no_glu_unique,occupancy,NC_015948.1,2563447,2563747,301,NA,"15,060",y
+22,no_glu_unique,occupancy,NC_015948.1,2237448,2237748,301,NA,"8,374",y
+16,no_glu_unique,occupancy,NC_015948.1,832252,832552,301,NA,"7,922",y
+26,no_glu_unique,occupancy,NC_015948.1,2921013,2921313,301,NA,"2,639",y
+7,no_glu_unique,occupancy,NC_015943.1,325159,325459,301,NA,"2,168",y
+17,no_glu_unique,occupancy,NC_015948.1,959806,960106,301,NA,"2,048",y
+9,trmB_DiffBind/shared,affinity,NC_015948.1,1358449,1358749,301,-6.94,"44,296",y
+2,trmB_DiffBind/shared,affinity,NC_015944.1,133666,133966,301,-5.96,"24,740",y
+4,trmB_DiffBind/shared,affinity,NC_015948.1,168781,169081,301,-6.66,"24,038",y
+6,trmB_DiffBind/shared,affinity,NC_015948.1,1211383,1211683,301,-4.69,"10,328",y
+8,trmB_DiffBind/shared,affinity,NC_015948.1,1315389,1315689,301,-4.46,"9,538",y
+15,trmB_DiffBind/shared,affinity,NC_015948.1,2635396,2635696,301,-5.22,"7,715",y
+16,trmB_DiffBind/shared,affinity,NC_015948.1,2701036,2701336,301,-4.65,"5,642",y
+1,shared,occupancy,NC_015944.1,134268,134568,301,NA,918,y
+8,no_glu_unique,occupancy,NC_015944.1,41488,41788,301,NA,546,y
