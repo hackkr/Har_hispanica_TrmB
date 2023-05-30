@@ -1,0 +1,6 @@
+motif_id	motif_alt_id	sequence_name	start	stop	strand	score	p-value	q-value	matched_sequence
+5-CGGCAGCGA	STREME-5	NC_015944.1	134385	134393	-	16.4337	5.73e-06	0.0493	CGGCAGCGA
+
+# FIMO (Find Individual Motif Occurrences): Version 5.5.1 compiled on Feb  5 2023 at 03:13:30
+# The format of this file is described at http://localhost:8080/meme_5.5.1/doc/fimo-output-format.html.
+# fimo --parse-genomic-coord --verbosity 1 --oc 1st_order_15peaks_19/fimo_out_3 --bgfile 1st_order_15peaks_19/intergenic_1st.txt --motif 5-CGGCAGCGA 1st_order_15peaks_19/streme_out/streme.xml 04a_consensus_peak_seqs.fna

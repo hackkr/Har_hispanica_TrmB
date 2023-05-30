@@ -1,0 +1,2 @@
+##gff-version 3
+NC_015944.1	fimo	nucleotide_motif	134385	134393	52.4	-	.	Name=5-CGGCAGCGA_NC_015944.1-;Alias=STREME-5;ID=5-CGGCAGCGA-STREME-5-1-NC_015944.1;pvalue=5.73e-06;qvalue=0.0493;sequence=CGGCAGCGA;

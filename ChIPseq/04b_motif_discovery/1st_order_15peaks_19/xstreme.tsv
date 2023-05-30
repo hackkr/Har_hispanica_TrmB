@@ -1,0 +1,11 @@
+RANK	SEED_MOTIF	CLUSTER	SOURCE	ID	ALT_ID	CONSENSUS	WIDTH	SITES	SEA_PVALUE	EVALUE	EVALUE_ACC	SIM_SOURCE	SIM_MOTIF	MOTIF_URL
+1	1	1	MEME	ATTHACTMGAAWMBKWGTA	MEME-1	ATTHACTMGAAWMBKWGTA	19	15	6.45e-009	2.50e-010	1	hbt_motif_meme.txt	1	 
+2	0	1	STREME	1-ATTCACTCG	STREME-1	ATTCACTCG	9	14	1.03e-007	1.03e-007	0	hbt_motif_meme.txt	1	 
+3	1	2	STREME	2-CACCGSG	STREME-2	CACCGSG	7	15	2.06e-007	1.03e-007	0	hbt_motif_meme.txt	1	 
+4	1	3	STREME	5-CGGCAGCGA	STREME-5	CGGCAGCGA	9	11	8.77e-007	2.50e-005	0	hbt_motif_meme.txt	1	 
+5	0	3	STREME	3-CGKCGRCGAG	STREME-3	CGKCGRCGAG	10	12	5.26e-006	5.26e-006	0	hbt_motif_meme.txt	1	 
+6	1	4	STREME	4-GAARCYRTT	STREME-4	GAARCYRTT	9	13	2.19e-005	1.09e-005	0	hbt_motif_meme.txt	1	 
+
+# XSTREME (Motif Discovery and Enrichment Analysis): Version 5.5.1 released on Sun Jan 29 10:33:12 2023 -0800
+# The format of this file is described at http://localhost:8080/meme_5.5.1/doc/xstreme-output-format.html
+# xstreme -maxw 19 --meme-mod zoops --order 1 --p 04a_consensus_peak_seqs.fna --m hbt_motif_meme.txt --bfile intergenic_1st.txt --oc 1st_order_15peaks_19/

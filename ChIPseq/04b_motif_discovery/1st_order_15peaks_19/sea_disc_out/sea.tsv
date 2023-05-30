@@ -1,0 +1,11 @@
+RANK	DB	ID	ALT_ID	CONSENSUS	TP	TP%	FP	FP%	ENR_RATIO	SCORE_THR	PVALUE	LOG_PVALUE	EVALUE	LOG_EVALUE	QVALUE	LOG_QVALUE
+1	1st_order_15peaks_19/meme_out/meme.xml	ATTHACTMGAAWMBKWGTA	MEME-1	ATTHACTMGAAWMBKWGTA	15	100.00	0	0.00	16	12	6.45e-9	-18.86	3.87e-8	-17.07	3.87e-8	-17.07
+2	1st_order_15peaks_19/streme_out/streme.xml	1-ATTCACTCG	STREME-1	ATTCACTCG	14	93.33	0	0.00	15	8.5	1.03e-7	-16.09	6.19e-7	-14.30	3.09e-7	-14.99
+3	1st_order_15peaks_19/streme_out/streme.xml	2-CACCGSG	STREME-2	CACCGSG	15	100.00	1	6.67	8	8.2	2.06e-7	-15.39	1.24e-6	-13.60	4.13e-7	-14.70
+4	1st_order_15peaks_19/streme_out/streme.xml	5-CGGCAGCGA	STREME-5	CGGCAGCGA	13	86.67	0	0.00	14	6.4	8.77e-7	-13.95	5.26e-6	-12.16	1.32e-6	-13.54
+5	1st_order_15peaks_19/streme_out/streme.xml	3-CGKCGRCGAG	STREME-3	CGKCGRCGAG	12	80.00	0	0.00	13	9.8	5.26e-6	-12.16	3.16e-5	-10.36	6.31e-6	-11.97
+6	1st_order_15peaks_19/streme_out/streme.xml	4-GAARCYRTT	STREME-4	GAARCYRTT	14	93.33	2	13.33	5	9.6	2.19e-5	-10.73	1.31e-4	-8.94	2.19e-5	-10.73
+
+# SEA (Simple Enrichment Analysis): Version 5.5.1 compiled on Feb  5 2023 at 03:13:38
+# The format of this file is described at http://localhost:8080/meme_5.5.1/doc/sea-output-format.html.
+# sea --verbosity 1 --oc 1st_order_15peaks_19/sea_disc_out --qvalue --thresh 1 --order 1 --bfile 1st_order_15peaks_19/intergenic_1st.txt --seed 0 --align center --motif-pseudo 0.01 --noseqs --m 1st_order_15peaks_19/meme_out/meme.xml --m 1st_order_15peaks_19/streme_out/streme.xml --p 04a_consensus_peak_seqs.fna

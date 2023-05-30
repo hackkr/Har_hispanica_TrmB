@@ -1,0 +1,5 @@
+##gff-version 3
+NC_015948.1	fimo	nucleotide_motif	832460	832466	40.3	-	.	Name=2-CACCGSG_NC_015948.1-;Alias=STREME-2;ID=2-CACCGSG-STREME-2-1-NC_015948.1;pvalue=9.23e-05;qvalue=0.199;sequence=CACCGGG;
+NC_015944.1	fimo	nucleotide_motif	133668	133674	40.3	-	.	Name=2-CACCGSG_NC_015944.1-;Alias=STREME-2;ID=2-CACCGSG-STREME-2-1-NC_015944.1;pvalue=9.23e-05;qvalue=0.199;sequence=CACCGGG;
+NC_015948.1	fimo	nucleotide_motif	1211587	1211593	40.3	-	.	Name=2-CACCGSG_NC_015948.1-;Alias=STREME-2;ID=2-CACCGSG-STREME-2-1-NC_015948.1;pvalue=9.23e-05;qvalue=0.199;sequence=CACCGGG;
+NC_015948.1	fimo	nucleotide_motif	1315655	1315661	40.3	+	.	Name=2-CACCGSG_NC_015948.1+;Alias=STREME-2;ID=2-CACCGSG-STREME-2-1-NC_015948.1;pvalue=9.23e-05;qvalue=0.199;sequence=CACCGGG;

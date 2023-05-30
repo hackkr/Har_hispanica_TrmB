@@ -1,0 +1,7 @@
+# 0-order Markov frequencies from file intergenic.fna
+# seqs: 3258    min: 1    max: 2505    avg: 152.6    sum: 497198    alph: DNA
+# order 0
+A 2.280e-01
+C 2.720e-01
+G 2.720e-01
+T 2.280e-01

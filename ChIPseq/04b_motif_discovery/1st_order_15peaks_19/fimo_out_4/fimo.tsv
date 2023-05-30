@@ -1,0 +1,14 @@
+motif_id	motif_alt_id	sequence_name	start	stop	strand	score	p-value	q-value	matched_sequence
+4-GAARCYRTT	STREME-4	NC_015948.1	2635612	2635620	-	13.5528	7.4e-06	0.0551	GAAGCCGTT
+4-GAARCYRTT	STREME-4	NC_015948.1	1211469	1211477	-	13.187	1.3e-05	0.0551	GAAACTGTT
+4-GAARCYRTT	STREME-4	NC_015943.1	325291	325299	-	12.6585	2.5e-05	0.0551	GAAACCATT
+4-GAARCYRTT	STREME-4	NC_015948.1	832260	832268	-	12.4634	2.78e-05	0.0551	GAAGATGTT
+4-GAARCYRTT	STREME-4	NC_015944.1	134403	134411	+	12.3984	3.18e-05	0.0551	GAAGCTGCT
+4-GAARCYRTT	STREME-4	NC_015948.1	168933	168941	-	12.1545	4.28e-05	0.0618	GAAGCTTTT
+4-GAARCYRTT	STREME-4	NC_015944.1	133839	133847	+	11.8699	6.86e-05	0.0772	GAAGCCACT
+4-GAARCYRTT	STREME-4	NC_015944.1	134268	134276	-	11.7642	8.02e-05	0.0772	GACGCCGTT
+4-GAARCYRTT	STREME-4	NC_015948.1	959822	959830	-	11.7642	8.02e-05	0.0772	GACGCCGTT
+
+# FIMO (Find Individual Motif Occurrences): Version 5.5.1 compiled on Feb  5 2023 at 03:13:30
+# The format of this file is described at http://localhost:8080/meme_5.5.1/doc/fimo-output-format.html.
+# fimo --parse-genomic-coord --verbosity 1 --oc 1st_order_15peaks_19/fimo_out_4 --bgfile 1st_order_15peaks_19/intergenic_1st.txt --motif 4-GAARCYRTT 1st_order_15peaks_19/streme_out/streme.xml 04a_consensus_peak_seqs.fna

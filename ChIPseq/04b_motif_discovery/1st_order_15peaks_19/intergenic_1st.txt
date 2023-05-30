@@ -1,0 +1,24 @@
+# 1-order Markov frequencies from file intergenic.fna
+# seqs: 3258    min: 1    max: 2505    avg: 152.6    sum: 497198    alph: DNA
+# order 0
+A 2.280e-01
+C 2.720e-01
+G 2.720e-01
+T 2.280e-01
+# order 1
+AA 5.299e-02
+AC 6.879e-02
+AG 5.556e-02
+AT 5.101e-02
+CA 6.083e-02
+CC 6.800e-02
+CG 8.761e-02
+CT 5.556e-02
+GA 6.612e-02
+GC 6.897e-02
+GG 6.800e-02
+GT 6.879e-02
+TA 4.783e-02
+TC 6.612e-02
+TG 6.083e-02
+TT 5.299e-02

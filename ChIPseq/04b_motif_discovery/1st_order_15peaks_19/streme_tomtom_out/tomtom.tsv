@@ -1,0 +1,10 @@
+Query_ID	Target_ID	Optimal_offset	p-value	E-value	q-value	Overlap	Query_consensus	Target_consensus	Orientation
+1-ATTCACTCG	1	-3	0.138447	0.138447	0.276894	6	ATTCACTCG	TACTCGCCGTCGGAGTA	-
+2-CACCGSG	1	2	0.469985	0.469985	0.636787	7	CACCGGG	TACTCCGACGGCGAGTA	+
+3-CGKCGRCGAG	1	5	0.00134997	0.00134997	0.00269994	10	CGTCGACGAG	TACTCCGACGGCGAGTA	+
+4-GAARCYRTT	1	5	0.975359	0.975359	0.987593	9	GAAGCCGTT	TACTCGCCGTCGGAGTA	-
+5-CGGCAGCGA	1	5	0.0825768	0.0825768	0.165154	9	CGGCAGCGA	TACTCCGACGGCGAGTA	+
+
+# Tomtom (Motif Comparison Tool): Version 5.5.1 compiled on Feb  5 2023 at 03:13:43
+# The format of this file is described at http://localhost:8080/meme_5.5.1/doc/tomtom-output-format.html.
+# tomtom -verbosity 1 -oc 1st_order_15peaks_19/streme_tomtom_out -min-overlap 5 -dist ed -evalue -thresh 1 -no-ssc 1st_order_15peaks_19/streme_out/streme.xml hbt_motif_meme.txt

@@ -1,0 +1,58 @@
+Invoking:
+  getsize 04a_consensus_peak_seqs.fna 1> $metrics
+Finished invoke:
+  name: count_primary_seqs  status: 0  time: 0.015939
+Invoking:
+  streme --verbosity 1 --oc 1st_order_15peaks_19/streme_out -dna --minw 6 --maxw 19 --order 1 --bfile 1st_order_15peaks_19/intergenic_1st.txt --seed 0 --align center --evalue --thresh 0.05 --p 04a_consensus_peak_seqs.fna
+Finished invoke:
+  name: streme  status: 0  time: 1.728555
+Invoking:
+  meme -oc 1st_order_15peaks_19/meme_out -mod zoops -minw 6 -maxw 19 -bfile 1st_order_15peaks_19/intergenic_1st.txt -markov_order 1 -seed 0 -dna -revcomp -evt 0.05 -nostatus 04a_consensus_peak_seqs.fna
+Finished invoke:
+  name: meme  status: 0  time: 2.813061
+Invoking:
+  sea --verbosity 1 --oc 1st_order_15peaks_19/sea_disc_out --qvalue --thresh 1 --order 1 --bfile 1st_order_15peaks_19/intergenic_1st.txt --seed 0 --align center --motif-pseudo 0.01 --noseqs --m 1st_order_15peaks_19/meme_out/meme.xml --m 1st_order_15peaks_19/streme_out/streme.xml --p 04a_consensus_peak_seqs.fna
+Finished invoke:
+  name: sea_disc  status: 0  time: 0.107871
+Invoking:
+  sea --verbosity 1 --oc 1st_order_15peaks_19/sea_out --thresh 0.05 --order 1 --bfile 1st_order_15peaks_19/intergenic_1st.txt --seed 0 --align center --motif-pseudo 0.01 --m 1st_order_15peaks_19/meme_out/meme.xml --m 1st_order_15peaks_19/streme_out/streme.xml --m hbt_motif_meme.txt --p 04a_consensus_peak_seqs.fna
+Finished invoke:
+  name: sea  status: 0  time: 0.118943
+Invoking:
+  sea --verbosity 1 --oc 1st_order_15peaks_19/distr_out --pvalue --thresh 1 --hofract 0 --order 1 --bfile 1st_order_15peaks_19/intergenic_1st.txt --seed 0 --motif-pseudo 0.01 --p 04a_consensus_peak_seqs.fna --m 1st_order_15peaks_19/combined.meme
+Finished invoke:
+  name: distr_sea  status: 0  time: 0.081239
+Invoking:
+  tomtom -verbosity 1 -oc 1st_order_15peaks_19/streme_tomtom_out -min-overlap 5 -dist ed -evalue -thresh 1 -no-ssc 1st_order_15peaks_19/streme_out/streme.xml hbt_motif_meme.txt
+Finished invoke:
+  name: streme_tomtom  status: 0  time: 0.208589
+Invoking:
+  tomtom -verbosity 1 -oc 1st_order_15peaks_19/meme_tomtom_out -min-overlap 5 -dist ed -evalue -thresh 1 -no-ssc 1st_order_15peaks_19/meme_out/meme.xml hbt_motif_meme.txt
+Finished invoke:
+  name: meme_tomtom  status: 0  time: 0.210373
+Invoking:
+  tomtom -verbosity 1 -text -thresh 0.1 1st_order_15peaks_19/combined.meme 1st_order_15peaks_19/combined.meme 1> 1st_order_15peaks_19/motif_alignment.txt
+Finished invoke:
+  name: align_tomtom  status: 0  time: 0.091615
+Invoking:
+  fimo --parse-genomic-coord --verbosity 1 --oc 1st_order_15peaks_19/fimo_out_1 --bgfile 1st_order_15peaks_19/intergenic_1st.txt --motif ATTHACTMGAAWMBKWGTA 1st_order_15peaks_19/meme_out/meme.xml 04a_consensus_peak_seqs.fna
+Finished invoke:
+  name: fimo1  status: 0  time: 0.101672
+Invoking:
+  fimo --parse-genomic-coord --verbosity 1 --oc 1st_order_15peaks_19/fimo_out_2 --bgfile 1st_order_15peaks_19/intergenic_1st.txt --motif 2-CACCGSG 1st_order_15peaks_19/streme_out/streme.xml 04a_consensus_peak_seqs.fna
+Finished invoke:
+  name: fimo2  status: 0  time: 0.08767
+Invoking:
+  fimo --parse-genomic-coord --verbosity 1 --oc 1st_order_15peaks_19/fimo_out_3 --bgfile 1st_order_15peaks_19/intergenic_1st.txt --motif 5-CGGCAGCGA 1st_order_15peaks_19/streme_out/streme.xml 04a_consensus_peak_seqs.fna
+Finished invoke:
+  name: fimo3  status: 0  time: 0.093875
+Invoking:
+  fimo --parse-genomic-coord --verbosity 1 --oc 1st_order_15peaks_19/fimo_out_4 --bgfile 1st_order_15peaks_19/intergenic_1st.txt --motif 4-GAARCYRTT 1st_order_15peaks_19/streme_out/streme.xml 04a_consensus_peak_seqs.fna
+Finished invoke:
+  name: fimo4  status: 0  time: 0.085592
+Writing output
+Invoking:
+  xstreme_html_to_tsv 1st_order_15peaks_19//xstreme.html 1st_order_15peaks_19//xstreme.tsv "xstreme -maxw 19 --meme-mod zoops --order 1 --p 04a_consensus_peak_seqs.fna --m hbt_motif_meme.txt --bfile intergenic_1st.txt --oc 1st_order_15peaks_19/" 5.5.1 "Sun Jan 29 10\:33\:12 2023 -0800"
+Finished invoke:
+  name: summary  status: 0  time: 0.170635
+Done
