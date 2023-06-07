@@ -1,0 +1,77 @@
+---
+title: "OD measurements from RNA-seq flasks"
+author: Rylee K. Hackley
+output: 
+  html_document:
+    keep_md: true
+---
+
+```{r, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(viridis)
+ods <- read_csv("AKS319_RNA_growth_supp.csv")
+```
+
+```{r, message=FALSE, warning=FALSE}
+color_group <- c("grey", "black")
+
+ods %>%
+  filter(genotype == "TRMB") %>%
+  ggplot() +
+  geom_line(aes(x = time, y = OD, color = sample_ID, linetype = condition), linewidth = 1.2) +
+  geom_point(aes(x = time, y = OD, fill = pyrF), size = 4, shape = 21, stroke = 0, alpha = 0.7) +
+  scale_colour_viridis(discrete = T, option = "C", end = 0.8) +
+  scale_fill_manual(values = color_group) +
+  labs(y = "Optical Density", x = "time (h)") +
+  theme_bw()+
+  theme(
+    axis.title.x = element_text(face = "bold", size = 12),
+    axis.title.y = element_text(face = "bold", size = 12, angle = 90),
+    axis.text.y = element_text(size = 10),
+    axis.text.x = element_text(size = 10),
+    axis.ticks.length.y.left = unit(.05, "cm"),
+    legend.spacing.y = unit(.1, 'cm')
+  )->fig
+
+plot(fig)
+
+png("RNA-sample_growth.png", width = 4, height = 2.8, units = "in", res = 1200, bg = "transparent")
+plot(fig)
+dev.off()
+```
+
+is there any difference between pyrF and no pyrF samples across time?
+```{r}
+#between -/= glucose regardless of pyrF
+t.test(
+  x = ods %>%
+    filter(genotype == "TRMB" & condition == "+" & time == 24) %>%
+    pull(OD),
+  y = ods %>%
+    filter(genotype == "TRMB" & condition == "-" & time == 24) %>%
+    pull(OD),
+  alternative = "two.sided"
+)
+
+# between +glu samples with and without pyrF
+t.test(
+  x = ods %>%
+    filter(genotype == "TRMB" & condition == "+" & time == 24 & pyrF == "no") %>%
+    pull(OD),
+  y = ods %>%
+    filter(genotype == "TRMB" & condition == "+" & time == 24 & pyrF == "yes") %>%
+    pull(OD),
+  alternative = "two.sided"
+)
+
+# between +glu samples with and without pyrF
+t.test(
+  x = ods %>%
+    filter(genotype == "TRMB" & condition == "-" & time == 24 & pyrF == "no") %>%
+    pull(OD),
+  y = ods %>%
+    filter(genotype == "TRMB" & condition == "-" & time == 24 & pyrF == "yes") %>%
+    pull(OD),
+  alternative = "two.sided"
+)
+```
