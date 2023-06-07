@@ -47,7 +47,6 @@ mt0 <- rbind(mt1, mt2)
 
 # combine expt info with biorep info and remove expt column
 mt0$biorep <- paste(mt0$biorep, mt0$expt, sep = "-")
-# mt0 <- mt0[-8]
 
 ## replace none with "no carbon" for labeling
 mt0$ID <- str_replace_all(mt0$ID, "none", "no carbon")
@@ -238,14 +237,6 @@ stats2 <- t_mtdt2 %>%
     average = mean(value) + 1,
     CI95 = conf_int95(value)
   )
-```
-
-```
-## `summarise()` has grouped output by 'ID', 'strain', 'condition'. You can
-## override using the `.groups` argument.
-```
-
-```r
 unique(stats2$strain)
 ```
 
@@ -259,7 +250,7 @@ stats2 %>%
   ggplot(., aes(x = time, y = log10(average), color = strain)) +
   xlab("time (h)") +
   ylab("log10(Optical Denisty)") +
-  geom_line(size = 1) +
+  geom_line(linewidth = 1) +
   scale_y_continuous(limits = c(0, 0.2)) +
   scale_x_continuous(limits = c(0, 70)) +
   geom_ribbon(aes(ymin = log10(average - CI95), ymax = log10(average + CI95), fill = strain, color = NULL), alpha = 0.2) +
@@ -276,14 +267,6 @@ stats2 %>%
   )
 ```
 
-```
-## Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
-## ℹ Please use `linewidth` instead.
-## This warning is displayed once every 8 hours.
-## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
-## generated.
-```
-
 ![](Fig2A_hbt_sugars_modeling_files/figure-html/unnamed-chunk-6-1.png)<!-- -->
 
 insets
@@ -294,7 +277,7 @@ stats2$condition <- factor(stats2$condition, levels = c("25mM sucrose", "25mM gl
 stats2 %>%
   filter(strain == "trmB") %>%
   ggplot(., aes(x = time, y = log10(average), color = condition)) +
-  geom_line(size = 1) +
+  geom_line(linewidth = 1) +
   geom_ribbon(aes(ymin = log10(average - CI95), ymax = log10(average + CI95), fill = condition, color = NULL), alpha = 0.2) +
   xlab("time (h)") +
   ylab("log10(Optical Denisty)") +
@@ -352,16 +335,7 @@ tmp %>%
     avg_auc = mean(rat_auc),
     auc_sd = sd(rat_auc)
   ) -> norms.hbt
-```
 
-```
-## `summarise()` has grouped output by 'strain', 'condition', 'biorep', 'ID'. You
-## can override using the `.groups` argument.
-## `summarise()` has grouped output by 'condition'. You can override using the
-## `.groups` argument.
-```
-
-```r
 # factorize for sorting
 norms.hbt$condition <- factor(norms.hbt$condition)
 
@@ -414,19 +388,13 @@ dev.off()
 ##   2
 ```
 
+Test for significance
+
 ```r
-# Test for significance
 tmp %>%
   group_by(strain, condition, biorep, ID) %>%
   summarise(avg_auc = mean(auc_e)) -> tmp2
-```
 
-```
-## `summarise()` has grouped output by 'strain', 'condition', 'biorep'. You can
-## override using the `.groups` argument.
-```
-
-```r
 for (i in 1:length(unique(tmp2$condition))) {
   cond <- unique(tmp2$condition)[i]
   trmB <- paste("trmB", cond, sep = "+")
