@@ -1,8 +1,11 @@
 ---
-title: "R Notebook"
-output: html_notebook
+title: "TrmB strains complementation assays"
+author: Rylee K. Hackley
+output: 
+  html_document:
+    keep_md: true
 ---
-```{r}
+```{r, message=FALSE}
 # load required libraries
 library(tidyverse)
 library(viridis)
@@ -39,7 +42,6 @@ dt0 <- dt
 dt0 <- dt0[-(1:6), ] ## remove the first 3 hours, or 6 timepoints.
 dt0$time <- seq(0, length.out = nrow(dt0), by = 0.5) # redo time points
 dt0 <- dt0[complete.cases(dt0), ]
-dt0
 ```
 
 ```{r}
@@ -72,7 +74,7 @@ unique(t_mtdt$strain)
 ```
 
 remove outliers and plot. external wells are more prone to evaporation and crystallization. 
-```{r}
+```{r, collapse=TRUE}
 cond <- "25mM glucose"
 
 filter(t_mtdt, strain == "blank" & condition == cond) %>%
@@ -169,7 +171,6 @@ d <- dt[-c(1, 2)] - dt$blank
 d$time <- dt$time # add time column back
 mins <- Rfast::colMins(as.matrix(d), value = T) # get column minimums
 d <- sweep(d, 2, mins, "-") # subtract smallest value for each column
-d
 
 # bioreps with at least 3 tech reps
 mt0[, c(2, 3, 4, 6, 7)] %>%
@@ -181,7 +182,7 @@ mt0[, c(2, 3, 4, 6, 7)] %>%
 ```
 
 Growth curve modeling
-```{r}
+```{r, message=FALSE}
 # Let's create an output data frame to store the results in. We'll create it so that it is the right size (it's faster this way!), but leave it empty.
 num_analyses <- length(names(d)) - 1
 d_gc <- data.frame(
@@ -271,7 +272,7 @@ dev.off()
 ```
 
 graph fitted curves:
-```{r}
+```{r, message=FALSE}
 colnames(d_gc)[1] <- "variable"
 d_gc$variable <- as.numeric(d_gc$variable)
 merge(d_gc, mt0[-2]) -> tmp
@@ -308,7 +309,7 @@ mins <- Rfast::colMins(as.matrix(fits), value = T) # get column minimums
 fits <- sweep(fits, 2, mins, "-") # subtract smallest value for each column
 ```
 
-```{r, fig.width=4, fig.height=3, message=FALSE}
+```{r, message=FALSE}
 # Convert data from wide to long format
 m_dt <- reshape2::melt(fits, id = "time")
 mtdt <- merge(m_dt, mt0, by = "variable")
@@ -331,7 +332,7 @@ stats2 %>%
   ggplot(., aes(x = time, y = log10(average), color = strain)) +
   xlab("time (h)") +
   ylab("log10(OD)") +
-  geom_line(size = 1) +
+  geom_line(linewidth = 1) +
   scale_y_continuous(limits = c(0, 0.06)) +
   scale_x_continuous(limits = c(0, 80)) +
   geom_ribbon(aes(ymin = log10(average - CI95), ymax = log10(average + CI95), fill = strain, color = NULL), alpha = 0.2) +
@@ -358,11 +359,11 @@ plot(figure)
 dev.off()
 ```
 
-```{r}
+```{r, message=FALSE}
 colnames(d_gc)[1] <- "variable"
 d_gc[d_gc == 0] <- NA
 d_gc <- d_gc[complete.cases(d_gc), ]
-(merge(d_gc, mt0) -> tmp)
+merge(d_gc, mt0) -> tmp
 
 # t-test considering technical replicates distinct.
 tmp %>%
@@ -405,9 +406,9 @@ plot(auc)
 dev.off()
 ```
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
 colnames(d_gc)[1] <- "variable"
-(merge(d_gc, mt0) -> tmp)
+merge(d_gc, mt0) -> tmp
 
 tmp %>%
   group_by(strain, condition, biorep, ID, media) %>%
@@ -461,7 +462,4 @@ ggbarplot(norms.hca,
     strip.placement = "outside",
     legend.position = "none"
   )
-
-# pal <- c("#482576FF", "#2d718eff","#bbdf27ff")
-# scale_fill_manual(values = pal)+
 ```
