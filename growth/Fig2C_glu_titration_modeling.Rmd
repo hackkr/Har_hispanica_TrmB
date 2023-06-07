@@ -1,6 +1,9 @@
 ---
-title: "R Notebook"
-output: html_notebook
+title: "Haloarcula hispanica TrmB (AKS133) growth in glucose concentrations"
+author: Rylee K. Hackley
+output: 
+  html_document:
+    keep_md: true
 ---
 ```{r, message=F}
 # load required libraries
@@ -36,7 +39,6 @@ mt0 <- mt1
 
 # combine expt info with biorep info and remove expt column
 mt0$biorep <- paste(mt0$biorep, mt0$expt, sep = "-")
-# mt0 <- mt0[-8]
 
 ## replace none with "no carbon" for labeling
 mt0$ID <- str_replace_all(mt0$ID, "none", "no carbon")
@@ -125,7 +127,6 @@ for (col_name in names(d)) {
   }
 }
 dev.off()
-d_gc
 ```
 
 graph fitted curves:
@@ -186,7 +187,7 @@ stats2 %>%
   ggplot(., aes(x = time, y = log10(average), color = strain)) +
   xlab("time (h)") +
   ylab("log10(Optical Denisty)") +
-  geom_line(size = 1) +
+  geom_line(linewidth = 1) +
   scale_y_continuous(limits = c(0, 0.18)) +
   scale_x_continuous(limits = c(0, 82)) +
   geom_ribbon(aes(ymin = log10(average - CI95), ymax = log10(average + CI95), fill = strain, color = NULL), alpha = 0.2) +
@@ -208,9 +209,9 @@ dev.off()
 ```
 
 calculate fold changes
-```{r}
+```{r, message=FALSE}
 colnames(d_gc)[1] <- "variable"
-(merge(d_gc, mt0) -> tmp)
+merge(d_gc, mt0) -> tmp
 
 tmp %>%
   group_by(strain, condition, ID, media) %>%
