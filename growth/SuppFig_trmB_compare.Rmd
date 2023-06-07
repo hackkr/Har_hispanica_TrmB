@@ -1,8 +1,11 @@
 ---
-title: "R Notebook"
-output: html_notebook
+title: "Comparing growth of TrmB deletion strains"
+author: Rylee K. Hackley
+output: 
+  html_document:
+    keep_md: true
 ---
-```{r}
+```{r, message=FALSE, warning=FALSE, echo=FALSE}
 # load required libraries
 library(tidyverse)
 library(viridis)
@@ -19,8 +22,7 @@ conf_int95 <- function(data) {
 }
 ```
 
-##This is where we load the raw data files from the bioscreen, and your plate layout file (called metafile)
-Some code also removes rows and columns with data we don't need or that are empty. experiment #1.
+Load the normalized data and meta data.
 ```{r}
 expt <- "trmB_deletion_compare"
 
@@ -56,7 +58,7 @@ mt0 <- mt0 %>% dplyr::slice(-c(10, 110, 20, 88))
 dt0 <- dt0 %>% select(!c(`10`, `110`, `20`, `88`))
 ```
 
-```{r}
+```{r, collapse=TRUE}
 # Convert data from wide to long format
 m_dt <- reshape2::melt(dt0, id = "time")
 mtdt <- merge(m_dt, mt0, by = "variable")
@@ -64,14 +66,14 @@ mtdt$environment <- paste(mtdt$media, mtdt$condition)
 well <- paste(mtdt$variable, mtdt$ID, sep = " ")
 mtdt <- cbind(well, mtdt)
 
-# time cutoff - this is a usefull function for graphing and analysis. You might not need to look at the full length of the experiment.
+# time cutoff - this is a useful function for graphing and analysis. You might not need to look at the full length of the experiment.
 t_mtdt <- mtdt[!(mtdt$time >= 80), ]
 
 unique(t_mtdt$condition)
 unique(t_mtdt$strain)
 ```
 
-remove blank outliers and plot. external wells are more prone to evaporation and crystallization. 
+remove blank outliers and plot.
 ```{r}
 cond <- "25mM glucose"
 
@@ -264,7 +266,7 @@ mins <- Rfast::colMins(as.matrix(fits), value = T) # get column minimums
 fits <- sweep(fits, 2, mins, "-") # subtract smallest value for each column
 ```
 
-```{r, fig.width=10, fig.height=4}
+```{r, message=FALSE, warning=FALSE}
 # Convert data from wide to long format
 m_dt <- reshape2::melt(fits, id = "time")
 mtdt <- merge(m_dt, mt0, by = "variable")
@@ -289,7 +291,7 @@ stats2 %>%
   ggplot(., aes(x = time, y = log10(average), color = strain)) +
   xlab("time (h)") +
   ylab("log10(Optical Denisty)") +
-  geom_line(size = 1) +
+  geom_line(linewidth = 1) +
   scale_x_continuous(limits = c(0, 72)) +
   geom_ribbon(aes(ymin = log10(average - CI95), ymax = log10(average + CI95), fill = strain, color = NULL), alpha = 0.2) +
   scale_fill_viridis("strain", discrete = TRUE, begin = 0.1, end = 0.9) +
@@ -345,11 +347,11 @@ dev.off()
 
 #TrmB normalized to WT (by condition)
 normalize trmB to WT. take average of WT bioreps. calculate ratios of individual trmB bioreps. then average and calc SD/std err
-```{r}
+```{r, message=FALSE, warning=FALSE}
 colnames(d_gc)[1] <- "variable"
 d_gc[d_gc == 0] <- NA
 d_gc <- d_gc[complete.cases(d_gc), ]
-(merge(d_gc, mt0) -> tmp)
+merge(d_gc, mt0) -> tmp
 
 # t-test considering technical replicates distinct.
 tmp %>%
